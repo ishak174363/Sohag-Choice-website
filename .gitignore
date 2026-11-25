@@ -1,0 +1,23 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Local database
+*.sqlite3-journal
+
+# Static collected in production
+staticfiles/
+
+# Environment
+.env
+venv/
+env/
+.venv/
+
+# IDE / OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db

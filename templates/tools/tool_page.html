@@ -1,0 +1,2009 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ tool.name }} · সোহাগ চয়েস ফ্রি টুলবক্স{% endblock %}
+{% block description %}{{ tool.short }} — সম্পূর্ণ বাংলায় ও বিনামূল্যে হিসাব করুন।{% endblock %}
+
+{% block content %}
+<div class="tool-page-wrap">
+
+  <!-- ── 1. Top Bar & Back Link ──────────────────────────── -->
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:10px;">
+    <a class="back-btn" href="/">
+      <span>←</span> <span>ফ্রি টুলবক্স</span>
+    </a>
+    <button class="action-pill" onclick="shareCurrentTool('{{ tool.name }}')" style="border-radius:99px;">
+      <span>↗️</span> <span>শেয়ার করুন</span>
+    </button>
+  </div>
+
+  <!-- ── 2. Tool Hero Card ──────────────────────────────── -->
+  <div class="tool-hero-card" style="border-top: 4px solid {{ tool.color }};">
+    <div class="tool-hero-icon" style="background:{{ tool.bg }};">
+      {{ tool.icon }}
+    </div>
+    <div class="tool-hero-content">
+      <span class="badge" style="background:{{ tool.bg }};color:{{ tool.color }};margin-bottom:8px;">
+        {{ tool.group_name }}
+      </span>
+      <h1>{{ tool.name }}</h1>
+      <p>{{ tool.short }}</p>
+    </div>
+  </div>
+
+  <!-- ── 3. Tool Interactive App ───────────────────────── -->
+  <div class="tool-app-card" id="toolApp">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- ── 4. WhatsApp Direct Consultation Banner ─────────── -->
+  <div class="result-card" style="background:#EBF7EE;border-color:rgba(14,122,71,0.25);margin-bottom:40px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+    <div style="display:flex;align-items:center;gap:14px;">
+      <div style="width:48px;height:48px;border-radius:50%;background:#25D366;color:#fff;display:grid;place-items:center;font-size:24px;flex:none;">
+        💬
+      </div>
+      <div>
+        <strong style="font-size:16px;color:var(--ink);display:block;">কোনো প্রশ্ন বা জিজ্ঞাসা আছে?</strong>
+        <span style="font-size:13.5px;color:var(--ink-secondary);">এই টুলের হিসাব নিয়ে সোহাগ চয়েসের সাথে সরাসরি হোয়াটসঅ্যাপে আলোচনা করুন।</span>
+      </div>
+    </div>
+    <a href="https://wa.me/8801785949700?text=%E0%A6%86%E0%A6%B8%E0%A6%B8%E0%A6%BE%E0%A6%B2%E0%A6%BE%E0%A6%AE%E0%A7%81%20%E0%A6%86%E0%A6%B2%E0%A6%BE%E0%A6%87%E0%A6%95%E0%A7%81%E0%A6%AE%20%E0%A6%A1%E0%A6%BE.%20%E0%A6%B8%E0%A7%8B%E0%A6%B9%E0%A6%BE%E0%A6%97%20%E0%A6%B8%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%B0%2C%20{{ tool.name|urlencode }}%20%E0%A6%A8%E0%A6%BF%E0%A7%9F%E0%A7%87%20%E0%A6%86%E0%A6%AA%E0%A6%A8%E0%A6%BE%E0%A6%B0%20%E0%A6%B8%E0%A6%B0%E0%A6%BE%E0%A6%B8%E0%A6%B0%E0%A6%BF%20%E0%A6%AA%E0%A6%B0%E0%A6%BE%E0%A6%AE%E0%A6%B0%E0%A7%8D%E0%A6%B6%20%E0%A6%9A%E0%A6%BE%E0%A6%87"
+       target="_blank" rel="noopener" class="btn-primary" style="background:#25D366;box-shadow:0 6px 16px rgba(37,211,102,0.3);">
+      <span>হোয়াটসঅ্যাপে জিজ্ঞেস করুন</span> <span>→</span>
+    </a>
+  </div>
+
+  <!-- ── 5. Curated Recommendations (Like Demo) ─────────── -->
+  {% if products %}
+  <section style="margin-bottom:48px;">
+    <div class="group-title-row">
+      <span class="group-indicator" style="background:var(--sun);"></span>
+      <h2>সোহাগের বাছাই · পরিবারের জন্য</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;">
+      {% for p in products %}
+      <div class="result-card" style="background:#fff;margin-top:0;display:flex;flex-direction:column;gap:10px;border-radius:18px;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+          <span style="font-size:32px;">{{ p.icon }}</span>
+          <span class="badge badge-amber">{{ p.tag }}</span>
+        </div>
+        <strong style="font-size:15px;color:var(--ink);line-height:1.35;">{{ p.name }}</strong>
+        <p style="font-size:12.5px;color:var(--ink-secondary);line-height:1.4;">{{ p.desc }}</p>
+        <div style="margin-top:auto;display:flex;justify-content:space-between;align-items:center;padding-top:10px;border-top:1px solid var(--border);">
+          <div>
+            <b style="font-size:16px;color:var(--green)">৳{{ p.price }}</b>
+            {% if p.old_price %}<s style="font-size:12px;color:var(--ink-muted);margin-left:4px;">৳{{ p.old_price }}</s>{% endif %}
+          </div>
+          <a href="https://wa.me/8801785949700?text={{ p.name|urlencode }}%20%E0%A6%85%E0%A6%B0%E0%A7%8D%E0%A6%A1%E0%A6%BE%E0%A6%B0%20%E0%A6%95%E0%A6%B0%E0%A6%A4%E0%A7%87%20%E0%A6%9A%E0%A6%BE%E0%A6%87"
+             target="_blank" class="action-pill" style="font-weight:700;color:var(--green);border-color:var(--green);">
+            <span>অর্ডার করুন</span> <span>→</span>
+          </a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- ── 6. Related Tools ───────────────────────────────── -->
+  {% if related %}
+  <section class="tool-group">
+    <div class="group-title-row">
+      <span class="group-indicator"></span>
+      <h2>আরও দরকারি টুল</h2>
+    </div>
+    <div class="tool-grid">
+      {% for r in related %}
+      <a class="tool-card" href="/tools/{{ r.id }}/"
+         style="--group-color:{{ r.color }};--group-bg:{{ r.bg }}">
+        <div class="card-icon">{{ r.icon }}</div>
+        <div class="card-title">{{ r.name }}</div>
+        <div class="card-short">{{ r.short }}</div>
+        <div class="card-arrow">→</div>
+      </a>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const TOOL = {
+  id:    "{{ tool.id }}",
+  name:  "{{ tool.name }}",
+  color: "{{ tool.color }}",
+  bg:    "{{ tool.bg }}",
+};
+
+// Share helper
+function shareCurrentTool(name) {
+  const url = window.location.href;
+  const text = `${name} — সোহাগ চয়েসের ফ্রি টুল দিয়ে সহজেই হিসাব করুন।\n${url}`;
+  if (navigator.share) {
+    navigator.share({ title: name, text: text, url: url }).catch(() => {});
+  } else {
+    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+  }
+}
+
+// API Fetch Helper
+async function apiFetch(url, opts={}) {
+  const defaults = { headers: { 'Content-Type': 'application/json' } };
+  if (opts.body && typeof opts.body === 'object') opts.body = JSON.stringify(opts.body);
+  const res = await fetch(url, { ...defaults, ...opts });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error || `HTTP ${res.status}`);
+  }
+  return res.json();
+}
+
+const app = document.getElementById('toolApp');
+
+function renderError(msg, targetId) {
+  const el = targetId ? document.getElementById(targetId) : null;
+  const html = `
+    <div style="background:var(--rose-soft);border:1.5px solid var(--rose);padding:18px;border-radius:14px;color:var(--rose);margin-top:16px;">
+      ⚠️ <b>ত্রুটি:</b> ${msg}
+    </div>
+  `;
+  if (el) el.innerHTML = html;
+  else app.innerHTML = html;
+}
+
+function setLoading(targetId, text='গণনা করা হচ্ছে…') {
+  const el = targetId ? document.getElementById(targetId) : null;
+  const html = `
+    <div style="text-align:center;padding:36px;color:var(--ink-secondary);">
+      <div class="spinner"></div>
+      <p style="margin-top:14px;font-weight:600;">${text}</p>
+    </div>
+  `;
+  if (el) el.innerHTML = html;
+  else app.innerHTML = html;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// TOOL CLIENT IMPLEMENTATIONS
+// ═══════════════════════════════════════════════════════════════
+
+const TOOL_RENDERERS = {
+
+  // ─── 1. VACCINE ──────────────────────────────────────────────
+  vaccine() {
+    app.innerHTML = `
+      <div style="max-width:440px;margin:0 auto 28px;text-align:center;">
+        <h3 style="font-size:20px;margin-bottom:8px;">শিশুর জন্মতারিখ দিন</h3>
+        <p style="color:var(--ink-secondary);font-size:14px;margin-bottom:20px;">
+          জন্মতারিখ দিলেই বাংলাদেশ স্বাস্থ্য অধিদপ্তরের (EPI) সিডিউল অনুযায়ী সব টিকার তারিখ বেরিয়ে আসবে।
+        </p>
+        <div class="form-group" style="text-align:left;">
+          <label class="form-label">জন্মতারিখ নির্বাচন করুন</label>
+          <input class="form-input" type="date" id="dobInput" max="${new Date().toISOString().slice(0,10)}">
+        </div>
+        <button class="btn-primary" id="calcVacBtn" style="width:100%;margin-top:8px;">
+          <span>টিকার সময়সূচি দেখুন</span> <span>→</span>
+        </button>
+      </div>
+      <div id="vacResult"></div>
+    `;
+
+    document.getElementById('calcVacBtn').onclick = async () => {
+      const dob = document.getElementById('dobInput').value;
+      if (!dob) return toast('জন্মতারিখ দিন');
+      setLoading('vacResult', 'টিকার সময়সূচি তৈরি হচ্ছে…');
+      try {
+        const data = await apiFetch('/api/vaccine/', { method:'POST', body:{ dob } });
+        renderVaccineResult(data, dob);
+      } catch(e) { renderError(e.message, 'vacResult'); }
+    };
+  },
+
+  // ─── 2. MILESTONE ────────────────────────────────────────────
+  milestone() {
+    app.innerHTML = `
+      <div style="max-width:460px;margin:0 auto 24px;text-align:center;">
+        <h3 style="font-size:20px;margin-bottom:8px;">শিশুর বর্তমান বয়স দিন</h3>
+        <p style="color:var(--ink-secondary);font-size:14px;margin-bottom:20px;">
+          এই বয়সে শিশুর কোন কোন বিকাশ স্বাভাবিক এবং কী খেলাধুলো করবেন দেখে নিন।
+        </p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;text-align:left;">
+          <div class="form-group">
+            <label class="form-label">বছর</label>
+            <input class="form-input" type="number" id="ageYear" min="0" max="5" value="0">
+          </div>
+          <div class="form-group">
+            <label class="form-label">মাস</label>
+            <input class="form-input" type="number" id="ageMon" min="0" max="11" value="6">
+          </div>
+        </div>
+        <button class="btn-primary" id="msBtn" style="width:100%;margin-top:8px;">
+          <span>মাইলস্টোন চেকলিস্ট দেখুন</span> <span>→</span>
+        </button>
+      </div>
+      <div id="msResult"></div>
+    `;
+    document.getElementById('msBtn').onclick = async () => {
+      const y = +document.getElementById('ageYear').value || 0;
+      const m = +document.getElementById('ageMon').value || 0;
+      const months = y * 12 + m;
+      setLoading('msResult', 'বিকাশ তালিকা লোড হচ্ছে…');
+      try {
+        const data = await apiFetch(`/api/milestones/?months=${months}`);
+        renderMilestones(data, months);
+      } catch(e) { renderError(e.message, 'msResult'); }
+    };
+  },
+
+  // ─── 3. GROWTH (WHO CHART) ───────────────────────────────────
+  growth() {
+    app.innerHTML = `
+      <div style="max-width:500px;margin:0 auto;">
+        <h3 style="font-size:20px;text-align:center;margin-bottom:6px;">শিশুর ওজন ও উচ্চতা দিন</h3>
+        <p style="color:var(--ink-secondary);font-size:14px;text-align:center;margin-bottom:24px;">
+          বিশ্ব স্বাস্থ্য সংস্থা (WHO) চার্টের সাথে বাচ্চার বৃদ্ধি স্বাভাবিক সীমার মধ্যে আছে কি না মিলিয়ে দেখুন।
+        </p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+          <div class="form-group">
+            <label class="form-label">ওজন (কেজি)</label>
+            <input class="form-input" type="number" id="gwWt" step="0.1" placeholder="যেমন: ৭.৫">
+          </div>
+          <div class="form-group">
+            <label class="form-label">উচ্চতা (সে.মি.)</label>
+            <input class="form-input" type="number" id="gwHt" step="0.5" placeholder="যেমন: ৬৮">
+          </div>
+          <div class="form-group">
+            <label class="form-label">বয়স (মাসে)</label>
+            <input class="form-input" type="number" id="gwMon" min="0" max="60" placeholder="যেমন: ৯">
+          </div>
+          <div class="form-group">
+            <label class="form-label">সন্তানের লিঙ্গ</label>
+            <select class="form-select" id="gwGnd">
+              <option value="boy">ছেলে শিশু 👦</option>
+              <option value="girl">মেয়ে শিশু 👧</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn-primary" id="gwBtn" style="width:100%;margin-top:12px;">
+          <span>WHO চার্টে মিলিয়ে দেখুন</span> <span>→</span>
+        </button>
+      </div>
+      <div id="gwResult" style="margin-top:28px;"></div>
+    `;
+    document.getElementById('gwBtn').onclick = async () => {
+      const body = {
+        weight: +document.getElementById('gwWt').value,
+        height: +document.getElementById('gwHt').value,
+        months: +document.getElementById('gwMon').value,
+        gender: document.getElementById('gwGnd').value,
+      };
+      if (!body.weight || !body.height) return toast('ওজন ও উচ্চতা দিন');
+      setLoading('gwResult', 'WHO চার্ট এনালাইসিস হচ্ছে…');
+      try {
+        const d = await apiFetch('/api/growth/', { method:'POST', body });
+        renderGrowth(d);
+      } catch(e) { renderError(e.message, 'gwResult'); }
+    };
+  },
+
+  // ─── 4. BABY FOOD ────────────────────────────────────────────
+  async babyfood() {
+    app.innerHTML = `
+      <div style="max-width:440px;margin:0 auto 24px;text-align:center;">
+        <h3 style="font-size:20px;margin-bottom:6px;">বাচ্চার বয়স কত মাস?</h3>
+        <p style="color:var(--ink-secondary);font-size:14px;margin-bottom:18px;">
+          ৬ মাস থেকে ৫ বছর পর্যন্ত কোন বয়সে কী খাবার নিরাপদ ও পুষ্টিকর—সাপ্তাহিক রুটিন দেখে নিন।
+        </p>
+        <div class="form-group" style="text-align:left;">
+          <label class="form-label">বয়স (মাসে) — ৬ থেকে ৬০</label>
+          <input class="form-input" type="number" id="bfMon" min="6" max="60" value="8">
+        </div>
+        <button class="btn-primary" id="bfBtn" style="width:100%;margin-top:8px;">
+          <span>খাবার তালিকা ও রুটিন দেখুন</span> <span>→</span>
+        </button>
+      </div>
+      <div id="bfResult"></div>
+    `;
+    document.getElementById('bfBtn').onclick = async () => {
+      const m = +document.getElementById('bfMon').value || 6;
+      setLoading('bfResult', 'খাবার তালিকা লোড হচ্ছে…');
+      try {
+        const d = await apiFetch(`/api/babyfood/?months=${m}`);
+        renderBabyFood(d);
+      } catch(e) { renderError(e.message, 'bfResult'); }
+    };
+    document.getElementById('bfBtn').click();
+  },
+
+  // ─── 5. NAMES ────────────────────────────────────────────────
+  async names() {
+    app.innerHTML = `
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;">
+        <div class="form-group" style="flex:1;min-width:180px;">
+          <label class="form-label">নাম বা অর্থ দিয়ে খুঁজুন</label>
+          <input class="form-input" type="search" id="nameQ" placeholder="যেমন: আয়েশা, আলো, সাহসী…">
+        </div>
+        <div class="form-group">
+          <label class="form-label">লিঙ্গ</label>
+          <select class="form-select" id="nameG">
+            <option value="">সব লিঙ্গ</option>
+            <option value="ছেলে">ছেলে</option>
+            <option value="মেয়ে">মেয়ে</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">ধরন</label>
+          <select class="form-select" id="nameT">
+            <option value="">সব ধরনের</option>
+            <option value="ইসলামিক">ইসলামিক</option>
+            <option value="বাংলা">বাংলা</option>
+          </select>
+        </div>
+      </div>
+      <div id="namesResult"></div>
+    `;
+    async function load() {
+      const q = document.getElementById('nameQ').value;
+      const g = document.getElementById('nameG').value;
+      const t = document.getElementById('nameT').value;
+      const p = new URLSearchParams();
+      if (q) p.set('q', q);
+      if (g) p.set('gender', g);
+      if (t) p.set('type', t);
+      const d = await apiFetch('/api/names/?' + p);
+      renderNames(d);
+    }
+    ['nameQ','nameG','nameT'].forEach(id => document.getElementById(id).addEventListener('input', load));
+    load();
+  },
+
+  // ─── 6. CALORIES ─────────────────────────────────────────────
+  async calories() {
+    app.innerHTML = `
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px;">
+        <div class="form-group" style="flex:1;min-width:200px;">
+          <label class="form-label">খাবার খুঁজুন</label>
+          <input class="form-input" type="search" id="calQ" placeholder="যেমন: ভাত, ইলিশ, ডিম, পরোটা…">
+        </div>
+        <div class="form-group">
+          <label class="form-label">খাবারের ক্যাটাগরি</label>
+          <select class="form-select" id="calCat">
+            <option value="">সব ক্যাটাগরি</option>
+          </select>
+        </div>
+      </div>
+      <div id="calResult"></div>
+    `;
+    const initData = await apiFetch('/api/calories/');
+    const catEl = document.getElementById('calCat');
+    initData.categories.forEach(c => catEl.innerHTML += `<option value="${c}">${c}</option>`);
+    renderCalories(initData);
+
+    async function loadCal() {
+      const q = document.getElementById('calQ').value;
+      const cat = document.getElementById('calCat').value;
+      const p = new URLSearchParams();
+      if (q) p.set('q', q);
+      if (cat) p.set('category', cat);
+      const d = await apiFetch('/api/calories/?' + p);
+      renderCalories(d);
+    }
+    document.getElementById('calQ').addEventListener('input', loadCal);
+    document.getElementById('calCat').addEventListener('change', loadCal);
+  },
+
+  // ─── 7. DIET PLAN ────────────────────────────────────────────
+  diet() {
+    app.innerHTML = `
+      <div style="max-width:520px;margin:0 auto;">
+        <h3 style="font-size:20px;text-align:center;margin-bottom:6px;">আপনার সঠিক ডায়েট প্ল্যান</h3>
+        <p style="color:var(--ink-secondary);font-size:14px;text-align:center;margin-bottom:24px;">
+          Mifflin-St Jeor ফর্মুলায় আপনার শরীরের দৈনিক ক্যালরি, প্রোটিন, শর্করা ও ফ্যাটের সঠিক হিসাব বের করুন।
+        </p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+          <div class="form-group">
+            <label class="form-label">ওজন (কেজি)</label>
+            <input class="form-input" type="number" id="dWt" placeholder="যেমন: ৬৫">
+          </div>
+          <div class="form-group">
+            <label class="form-label">উচ্চতা (সে.মি.)</label>
+            <input class="form-input" type="number" id="dHt" placeholder="যেমন: ১৬৫">
+          </div>
+          <div class="form-group">
+            <label class="form-label">বয়স</label>
+            <input class="form-input" type="number" id="dAge" value="28">
+          </div>
+          <div class="form-group">
+            <label class="form-label">লিঙ্গ</label>
+            <select class="form-select" id="dGen">
+              <option value="female">নারী</option>
+              <option value="male">পুরুষ</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">দৈনিক কার্যক্রম</label>
+            <select class="form-select" id="dAct">
+              <option value="sedentary">শুয়ে-বসে কাজ</option>
+              <option value="light">হালকা হাঁটাচলা</option>
+              <option value="moderate" selected>মাঝারি চলাচল</option>
+              <option value="active">কঠোর পরিশ্রম/ব্যায়াম</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">আপনার লক্ষ্য</label>
+            <select class="form-select" id="dGoal">
+              <option value="maintain">ওজন ধরে রাখা</option>
+              <option value="lose">ওজন কমানো (-৫০০ ক্যালরি)</option>
+              <option value="gain">ওজন বাড়ানো (+৪০০ ক্যালরি)</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn-primary" id="dBtn" style="width:100%;margin-top:12px;">
+          <span>ডায়েট প্ল্যান তৈরি করুন</span> <span>→</span>
+        </button>
+      </div>
+      <div id="dietResult" style="margin-top:28px;"></div>
+    `;
+    document.getElementById('dBtn').onclick = async () => {
+      const body = {
+        weight:   +document.getElementById('dWt').value,
+        height:   +document.getElementById('dHt').value,
+        age:      +document.getElementById('dAge').value,
+        gender:   document.getElementById('dGen').value,
+        activity: document.getElementById('dAct').value,
+        goal:     document.getElementById('dGoal').value,
+      };
+      if (!body.weight || !body.height) return toast('ওজন ও উচ্চতা দিন');
+      setLoading('dietResult', 'ডায়েট চার্ট সাজানো হচ্ছে…');
+      try {
+        const d = await apiFetch('/api/diet/', { method:'POST', body });
+        renderDiet(d);
+      } catch(e) { renderError(e.message, 'dietResult'); }
+    };
+  },
+
+  // ─── 8. PREGNANCY ────────────────────────────────────────────
+  pregnancy() {
+    app.innerHTML = `
+      <div style="max-width:440px;margin:0 auto;text-align:center;">
+        <h3 style="font-size:20px;margin-bottom:6px;">শেষ মাসিকের প্রথম দিন দিন</h3>
+        <p style="color:var(--ink-secondary);font-size:14px;margin-bottom:20px;">
+          আপনার গর্ভাবস্থার বর্তমান সপ্তাহ, আনুমানিক ডেলিভারির তারিখ ও করণীয় জেনে নিন।
+        </p>
+        <div class="form-group" style="text-align:left;">
+          <label class="form-label">শেষ মাসিকের তারিখ (LMP)</label>
+          <input class="form-input" type="date" id="lmpIn" max="${new Date().toISOString().slice(0,10)}">
+        </div>
+        <button class="btn-primary" id="pregBtn" style="width:100%;margin-top:8px;">
+          <span>সপ্তাহ ও ডেলিভারি হিসাব দেখুন</span> <span>→</span>
+        </button>
+      </div>
+      <div id="pregResult" style="margin-top:28px;"></div>
+    `;
+    document.getElementById('pregBtn').onclick = async () => {
+      const lmp = document.getElementById('lmpIn').value;
+      if (!lmp) return toast('তারিখ দিন');
+      setLoading('pregResult', 'সপ্তাহের হিসাব তৈরি হচ্ছে…');
+      try {
+        const d = await apiFetch('/api/pregnancy/', { method:'POST', body:{ lmp } });
+        renderPregnancy(d);
+      } catch(e) { renderError(e.message, 'pregResult'); }
+    };
+  },
+
+  // ─── 9. HONEY & GHEE ─────────────────────────────────────────
+  async honey() {
+    setLoading();
+    const d = await apiFetch('/api/honey/');
+    app.innerHTML = `
+      <p style="color:var(--ink-secondary);font-size:15px;margin-bottom:24px;">${d.intro}</p>
+      <h3 style="color:var(--amber);margin-bottom:14px;">🍯 খাঁটি মধু চেনার ঘরোয়া পরীক্ষা</h3>
+      <div style="display:grid;gap:12px;margin-bottom:30px;">
+        ${d.honey_tests.map(t => `
+          <div class="result-card" style="margin-top:0;background:#fff;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+              <strong style="color:var(--ink);font-size:16px;">${t.name}</strong>
+              <span class="badge ${t.reliable ? 'badge-green' : 'badge-amber'}">${t.reliable ? '✓ কার্যকর' : '⚠️ অনিশ্চিত'}</span>
+            </div>
+            <p style="font-size:13.5px;color:var(--ink-secondary);margin-bottom:8px;">🔬 <b>পদ্ধতি:</b> ${t.method}</p>
+            <p style="font-size:13.5px;color:var(--green)">✓ <b>খাঁটি মধু:</b> ${t.real}</p>
+            <p style="font-size:13.5px;color:var(--rose)">✗ <b>ভেজাল মধু:</b> ${t.fake}</p>
+            ${t.note ? `<p style="font-size:12.5px;color:var(--amber);margin-top:6px;">📌 ${t.note}</p>` : ''}
+          </div>
+        `).join('')}
+      </div>
+
+      <h3 style="color:var(--amber);margin-bottom:14px;">🧈 খাঁটি ঘি চেনার পরীক্ষা</h3>
+      <div style="display:grid;gap:12px;margin-bottom:30px;">
+        ${d.ghee_tests.map(t => `
+          <div class="result-card" style="margin-top:0;background:#fff;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+              <strong style="color:var(--ink);font-size:16px;">${t.name}</strong>
+              <span class="badge badge-green">✓ কার্যকর</span>
+            </div>
+            <p style="font-size:13.5px;color:var(--ink-secondary);margin-bottom:8px;">🔬 <b>পদ্ধতি:</b> ${t.method}</p>
+            <p style="font-size:13.5px;color:var(--green)">✓ <b>খাঁটি ঘি:</b> ${t.real}</p>
+            <p style="font-size:13.5px;color:var(--rose)">✗ <b>ভেজাল ঘি:</b> ${t.fake}</p>
+          </div>
+        `).join('')}
+      </div>
+
+      <div class="result-card" style="background:#F4FBF5;border-color:rgba(14,122,71,0.25);">
+        <strong style="color:var(--green);font-size:16px;display:block;margin-bottom:10px;">💡 বিশ্বস্ত পরামর্শ</strong>
+        ${d.tips.map(t => `<p style="font-size:14px;color:var(--ink-secondary);padding:4px 0;">• ${t}</p>`).join('')}
+      </div>
+    `;
+  },
+
+  // ─── 10. SUPPLEMENT QUIZ ─────────────────────────────────────
+  async supplement() {
+    const d = await apiFetch('/api/supplement/');
+    const answers = {};
+    app.innerHTML = `
+      <h3 style="font-size:20px;margin-bottom:8px;">ভিটামিন ও মিনারেল ঘাটতির ঝুঁকি যাচাই</h3>
+      <p style="color:var(--ink-secondary);font-size:14px;margin-bottom:20px;">
+        নিচের লক্ষণগুলোর মধ্যে আপনার সাথে যেগুলো মেলে টিক দিন:
+      </p>
+      <div style="display:grid;gap:10px;" id="suppQuestions">
+        ${d.questions.map((q, i) => `
+          <label style="display:flex;align-items:flex-start;gap:12px;padding:12px 16px;border:1.5px solid var(--border);border-radius:12px;cursor:pointer;background:#fff;">
+            <input type="checkbox" onchange="toggleSuppAns('${q.id}', this.checked)" style="width:18px;height:18px;accent-color:var(--green);margin-top:3px;">
+            <span style="font-size:14.5px;color:var(--ink);">${i+1}. ${q.text}</span>
+          </label>
+        `).join('')}
+      </div>
+      <button class="btn-primary" id="suppCalcBtn" style="margin-top:20px;width:100%;">
+        <span>ফলাফল ও পুষ্টি পরামর্শ দেখুন</span> <span>→</span>
+      </button>
+      <div id="suppResult"></div>
+    `;
+    window.toggleSuppAns = (id, checked) => { answers[id] = checked; };
+    document.getElementById('suppCalcBtn').onclick = async () => {
+      setLoading('suppResult', 'ফলাফল বিশ্লেষণ হচ্ছে…');
+      try {
+        const r = await apiFetch('/api/supplement/', { method:'POST', body:{ answers } });
+        renderSupplement(r);
+      } catch(e) { renderError(e.message, 'suppResult'); }
+    };
+  },
+
+  // ─── 11. RAMADAN ─────────────────────────────────────────────
+  async ramadan() {
+    app.innerHTML = `
+      <div style="max-width:400px;margin-bottom:24px;">
+        <label class="form-label">আপনার জেলা নির্বাচন করুন</label>
+        <select class="form-select" id="ramDistSelect"></select>
+      </div>
+      <div id="ramResult"></div>
+    `;
+    const d = await apiFetch('/api/ramadan/');
+    const sel = document.getElementById('ramDistSelect');
+    sel.innerHTML = d.districts.map(dst => `<option value="${dst}">${dst}</option>`).join('');
+    renderRamadan(d);
+    sel.onchange = async () => {
+      const r = await apiFetch('/api/ramadan/?district=' + encodeURIComponent(sel.value));
+      renderRamadan(r);
+    };
+  },
+
+  // ─── 12. HABIT 30 DAYS ───────────────────────────────────────
+  async habit() {
+    const d = await apiFetch('/api/habit/');
+    app.innerHTML = `
+      <div style="margin-bottom:24px;">
+        <h3 style="font-size:20px;margin-bottom:6px;">একটি অভ্যাস বেছে নিন</h3>
+        <p style="color:var(--ink-secondary);font-size:14px;">
+          অ্যাটমিক হ্যাবিট নিয়ম অনুযায়ী ৩০ দিন একটানা ট্র্যাকিংয়ে যেকোনো ভালো অভ্যাস গড়ে তোলা যায়।
+        </p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-bottom:30px;">
+        ${d.habits.map(h => `
+          <div class="result-card" style="margin-top:0;cursor:pointer;background:#fff;border-radius:16px;" onclick="chooseHabit('${h.id}','${h.name}',this)">
+            <span style="font-size:30px;display:block;margin-bottom:8px;">${h.icon}</span>
+            <strong style="font-size:15px;color:var(--ink);">${h.name}</strong>
+            <span class="badge badge-green" style="margin-top:8px;font-size:11px;">${h.category}</span>
+            <p style="font-size:12px;color:var(--ink-muted);margin-top:6px;">💡 ${h.tip}</p>
+          </div>
+        `).join('')}
+      </div>
+      <div id="habitGridWrap" style="display:none;background:#FAF8F5;border:1px solid var(--border);border-radius:20px;padding:28px;">
+        <h3 id="habitActiveTitle" style="margin-bottom:16px;"></h3>
+        <div class="habit-grid" id="habitDaysGrid"></div>
+        <div style="margin-top:20px;display:flex;align-items:center;gap:14px;">
+          <div style="flex:1;background:#E8E3D8;height:10px;border-radius:99px;overflow:hidden;">
+            <div id="habitProgressBar" style="height:100%;background:var(--green);width:0%;transition:width 0.4s;"></div>
+          </div>
+          <b id="habitPctText" style="color:var(--green);font-size:15px;">০%</b>
+        </div>
+      </div>
+    `;
+    window.chooseHabit = async (id, name, el) => {
+      document.querySelectorAll('#toolApp .result-card').forEach(c => c.style.borderColor='var(--border)');
+      el.style.borderColor = 'var(--green)';
+      const wrap = document.getElementById('habitGridWrap');
+      wrap.style.display = 'block';
+      document.getElementById('habitActiveTitle').textContent = `${name} — ৩০ দিনের চ্যালেঞ্জ`;
+      const grid = document.getElementById('habitDaysGrid');
+      const prog = await apiFetch(`/api/habit/progress/?habit_id=${id}`);
+      const doneSet = new Set(prog.done_days.filter(e => e.habit_id === id).map(e => e.day));
+
+      grid.innerHTML = '';
+      for (let day=1; day<=30; day++) {
+        const btn = document.createElement('button');
+        btn.className = 'habit-day' + (doneSet.has(day) ? ' done' : '');
+        btn.textContent = day;
+        btn.onclick = async () => {
+          try {
+            const r = await apiFetch('/api/habit/toggle/', { method:'POST', body:{ habit_id:id, habit_name:name, day } });
+            btn.classList.toggle('done', r.done);
+            if (r.done) doneSet.add(day); else doneSet.delete(day);
+            updateHabitProgress(doneSet.size);
+            toast(r.done ? `✓ দিন ${day} টিক দেওয়া হয়েছে!` : `দিন ${day} আনচেক করা হয়েছে`);
+          } catch(e) { toast('সেভ করা যায়নি'); }
+        };
+        grid.appendChild(btn);
+      }
+      updateHabitProgress(doneSet.size);
+    };
+    function updateHabitProgress(doneCount) {
+      const pct = Math.round(doneCount / 30 * 100);
+      document.getElementById('habitProgressBar').style.width = pct + '%';
+      document.getElementById('habitPctText').textContent = toBn(pct) + '%';
+    }
+  },
+
+  // ─── 13. BOOKS ───────────────────────────────────────────────
+  async books() {
+    app.innerHTML = `
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px;">
+        <div class="form-group" style="flex:1;min-width:160px;">
+          <label class="form-label">বাচ্চার বয়স নির্বাচন করুন</label>
+          <select class="form-select" id="bksAge"><option value="">সব বয়স</option></select>
+        </div>
+        <div class="form-group" style="flex:1;min-width:160px;">
+          <label class="form-label">পছন্দের বিষয়</label>
+          <select class="form-select" id="bksInt"><option value="">সব বিষয়</option></select>
+        </div>
+      </div>
+      <div id="booksListResult"></div>
+    `;
+    const init = await apiFetch('/api/books/');
+    const ageSel = document.getElementById('bksAge');
+    const intSel = document.getElementById('bksInt');
+    init.age_groups.forEach(a => ageSel.innerHTML += `<option value="${a}">${a} বছর</option>`);
+    init.interests.forEach(i => intSel.innerHTML += `<option value="${i}">${i}</option>`);
+    renderBooks(init);
+
+    async function reload() {
+      const p = new URLSearchParams();
+      if (ageSel.value) p.set('age_group', ageSel.value);
+      if (intSel.value) p.set('interest', intSel.value);
+      const d = await apiFetch('/api/books/?' + p);
+      renderBooks(d);
+    }
+    ageSel.onchange = reload;
+    intSel.onchange = reload;
+  },
+
+  // ─── 14. WORKSHEETS ──────────────────────────────────────────
+  worksheets() {
+    app.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:20px;">
+        <div class="form-group" style="flex:1;min-width:220px;margin-bottom:0;">
+          <label class="form-label">অনুশীলন শিটের বিষয়</label>
+          <select class="form-select" id="wsTopic">
+            <option value="vowel">বাংলা স্বরবর্ণ (অ থেকে ঔ)</option>
+            <option value="num">বাংলা সংখ্যা (১ থেকে ১০)</option>
+            <option value="eng">English Letters (A to J)</option>
+            <option value="math">সহজ যোগ অংক</option>
+          </select>
+        </div>
+        <button class="btn-primary" id="wsPrintBtn" style="height:44px;align-self:flex-end;">
+          <span>🖨️ প্রিন্ট / PDF ডাউনলোড</span>
+        </button>
+      </div>
+      <div id="wsCanvas" style="background:#fff;border:1.5px solid var(--border);border-radius:18px;padding:32px;"></div>
+    `;
+    const TOPICS = {
+      vowel: { title: 'বাংলা স্বরবর্ণ লেখার অনুশীলন শিট', items: ['অ','আ','ই','ঈ','উ','ঊ','ঋ','এ','ঐ','ও','ঔ'] },
+      num:   { title: 'বাংলা সংখ্যা লেখার অনুশীলন শিট', items: ['১','২','৩','৪','৫','৬','৭','৮','৯','১০'] },
+      eng:   { title: 'English Letter Tracing Worksheet', items: ['A','B','C','D','E','F','G','H','I','J'] },
+      math:  { title: 'সহজ যোগ অংকের অনুশীলন শিট', items: ['১ + ১ = ___','২ + ১ = ___','২ + ২ = ___','৩ + ২ = ___','৪ + ১ = ___','৩ + ৩ = ___','৫ + ২ = ___','৪ + ৪ = ___'] },
+    };
+    function draw() {
+      const key = document.getElementById('wsTopic').value;
+      const s = TOPICS[key];
+      const isMath = key === 'math';
+      document.getElementById('wsCanvas').innerHTML = `
+        <div style="border-bottom:2px solid var(--green);padding-bottom:12px;margin-bottom:24px;display:flex;justify-content:space-between;align-items:center;">
+          <strong style="font-size:20px;color:var(--ink);">${s.title}</strong>
+          <span style="font-size:13px;color:var(--ink-secondary);">নাম: ___________________ তারিখ: _________</span>
+        </div>
+        ${isMath ? `
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;font-size:26px;font-weight:700;">
+            ${s.items.map(it => `<div style="padding:16px;border:2px dashed var(--border);border-radius:12px;text-align:center;">${it}</div>`).join('')}
+          </div>
+        ` : `
+          <div style="display:grid;gap:14px;">
+            ${s.items.map(ch => `
+              <div style="display:flex;align-items:center;gap:16px;border-bottom:1px dashed #d5cebf;padding-bottom:8px;">
+                <span style="font-size:34px;font-weight:800;color:var(--ink);width:50px;text-align:center;">${ch}</span>
+                <span style="font-size:34px;color:#d5cebf;letter-spacing:24px;">${ch} ${ch} ${ch} ${ch} ${ch}</span>
+              </div>
+            `).join('')}
+          </div>
+        `}
+      `;
+    }
+    document.getElementById('wsTopic').onchange = draw;
+    document.getElementById('wsPrintBtn').onclick = () => {
+      openPrintPage('শিশুর ওয়ার্কশিট', document.getElementById('wsCanvas').innerHTML);
+    };
+    draw();
+  },
+
+  // ─── 15. BMI ─────────────────────────────────────────────────
+  bmi() {
+    app.innerHTML = `
+      <div style="max-width:420px;margin:0 auto;text-align:center;">
+        <h3 style="font-size:20px;margin-bottom:6px;">বিএমআই (BMI) ক্যালকুলেটর</h3>
+        <p style="color:var(--ink-secondary);font-size:14px;margin-bottom:20px;">আপনার ওজন ও উচ্চতা অনুযায়ী স্বাস্থ্যকর ওজনের সীমা দেখুন।</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;text-align:left;">
+          <div class="form-group">
+            <label class="form-label">ওজন (কেজি)</label>
+            <input class="form-input" type="number" id="bmiW" step="0.5" placeholder="যেমন: ৬৫">
+          </div>
+          <div class="form-group">
+            <label class="form-label">উচ্চতা (সে.মি.)</label>
+            <input class="form-input" type="number" id="bmiH" step="0.5" placeholder="যেমন: ১৬৫">
+          </div>
+        </div>
+        <button class="btn-primary" id="bmiRunBtn" style="width:100%;margin-top:8px;">
+          <span>বিএমআই হিসাব করুন</span> <span>→</span>
+        </button>
+      </div>
+      <div id="bmiOut"></div>
+    `;
+    document.getElementById('bmiRunBtn').onclick = async () => {
+      const body = { weight:+document.getElementById('bmiW').value, height:+document.getElementById('bmiH').value };
+      if (!body.weight || !body.height) return toast('ওজন ও উচ্চতা দিন');
+      setLoading('bmiOut', 'বিএমআই হিসাব হচ্ছে…');
+      try {
+        const d = await apiFetch('/api/bmi/', { method:'POST', body });
+        const out = document.getElementById('bmiOut');
+        if (out) {
+          out.innerHTML = `
+            <div class="result-card" style="text-align:center;padding:32px;background:#fff;margin-top:24px;">
+              <div class="num-big" style="color:${d.color}">${d.bmi}</div>
+              <div style="font-size:20px;font-weight:800;color:${d.color};margin:8px 0;">${d.label}</div>
+              <p style="font-size:14px;color:var(--ink-secondary);">আপনার আদর্শ ওজনের সীমা: <b>${d.ideal_range}</b></p>
+            </div>
+          `;
+        }
+      } catch(e) { renderError(e.message, 'bmiOut'); }
+    };
+  },
+
+  // ─── 16. WATER ───────────────────────────────────────────────
+  water() {
+    app.innerHTML = `
+      <div style="max-width:420px;margin:0 auto;text-align:center;">
+        <h3 style="font-size:20px;margin-bottom:6px;">দৈনিক পানির প্রয়োজনীয়তা</h3>
+        <p style="color:var(--ink-secondary);font-size:14px;margin-bottom:20px;">আপনার ওজন ও বয়সের ভিত্তিতে দিনে কত গ্লাস পানি পান করা উচিত।</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;text-align:left;">
+          <div class="form-group">
+            <label class="form-label">ওজন (কেজি)</label>
+            <input class="form-input" type="number" id="watW" value="60">
+          </div>
+          <div class="form-group">
+            <label class="form-label">বয়স</label>
+            <input class="form-input" type="number" id="watA" value="26">
+          </div>
+        </div>
+        <label style="display:flex;align-items:center;gap:10px;margin-bottom:16px;cursor:pointer;font-size:14px;color:var(--ink);">
+          <input type="checkbox" id="watActive" style="width:18px;height:18px;accent-color:var(--green)">
+          <span>নিয়মিত ব্যায়াম বা কায়িক পরিশ্রম করি</span>
+        </label>
+        <button class="btn-primary" id="watBtn" style="width:100%;">
+          <span>পানির হিসাব দেখুন</span> <span>→</span>
+        </button>
+      </div>
+      <div id="watOut"></div>
+    `;
+    document.getElementById('watBtn').onclick = async () => {
+      const body = {
+        weight: +document.getElementById('watW').value || 60,
+        age:    +document.getElementById('watA').value || 25,
+        active: document.getElementById('watActive').checked,
+      };
+      setLoading('watOut', 'পানির হিসাব তৈরি হচ্ছে…');
+      try {
+        const d = await apiFetch('/api/water/', { method:'POST', body });
+        const out = document.getElementById('watOut');
+        if (out) {
+          out.innerHTML = `
+            <div class="result-card" style="text-align:center;padding:32px;background:#fff;margin-top:24px;">
+              <div class="num-big" style="color:var(--blue)">${toBn(d.glasses)} গ্লাস</div>
+              <p style="font-size:16px;color:var(--ink-secondary);margin-top:6px;">(${toBn(d.ml)} মি.লি. বা প্রায় ${d.liters} লিটার প্রতিদিন)</p>
+            </div>
+          `;
+        }
+      } catch(e) { renderError(e.message, 'watOut'); }
+    };
+  },
+
+  // ─── 17. BP (উচ্চ রক্তচাপ ও প্রেশার গাইড) ─────────────────────
+  bp() {
+    app.innerHTML = `
+      <div style="max-width:540px;margin:0 auto 24px;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <h3 style="font-size:22px;margin-bottom:6px;">রক্তচাপ (BP) পরিমাপ ও স্টেজ বিশ্লেষণ</h3>
+          <p style="color:var(--ink-secondary);font-size:14px;">সিস্টোলিক ও ডায়াস্টোলিক প্রেশার লিখে জেনে নিন ধমনি ও হৃদযন্ত্রের বর্তমান অবস্থা।</p>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+          <div class="form-group">
+            <label class="form-label">সিস্টোলিক / ওপরের চাপ (mmHg)</label>
+            <input class="form-input" type="number" id="bpSys" value="120" min="60" max="250">
+            <span style="font-size:11.5px;color:var(--ink-muted);">স্বাভাবিক: < ১২০ mmHg</span>
+          </div>
+          <div class="form-group">
+            <label class="form-label">ডায়াস্টোলিক / নিচের চাপ (mmHg)</label>
+            <input class="form-input" type="number" id="bpDia" value="80" min="40" max="150">
+            <span style="font-size:11.5px;color:var(--ink-muted);">স্বাভাবিক: < ৮০ mmHg</span>
+          </div>
+        </div>
+
+        <div style="margin:12px 0 20px;">
+          <span style="font-size:12px;color:var(--ink-muted);font-weight:600;display:block;margin-bottom:6px;">সাধারণ রিডিং দিয়ে দ্রুত দেখুন:</span>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <button class="action-pill" onclick="setBP(118,78)">১২০/৮০ (স্বাভাবিক)</button>
+            <button class="action-pill" onclick="setBP(128,78)">১২৮/৭৮ (উচ্চ পূর্বাভাস)</button>
+            <button class="action-pill" onclick="setBP(136,86)">১৩৬/৮৬ (স্টেজ-১)</button>
+            <button class="action-pill" onclick="setBP(155,96)">১৫৫/৯৬ (স্টেজ-২)</button>
+            <button class="action-pill" onclick="setBP(190,122)" style="color:#DC2626;border-color:#DC2626;">১৯০/১২২ (ইমার্জেন্সি)</button>
+          </div>
+        </div>
+
+        <button class="btn-primary" id="bpCheckBtn" style="width:100%;background:#1D4ED8;box-shadow:0 8px 20px rgba(29,78,216,0.25);">
+          <span>🩺 প্রেশারের অবস্থা বিশ্লেষণ করুন</span> <span>→</span>
+        </button>
+      </div>
+      <div id="bpOut"></div>
+    `;
+
+    window.setBP = (s, d) => {
+      document.getElementById('bpSys').value = s;
+      document.getElementById('bpDia').value = d;
+      executeBP();
+    };
+
+    function executeBP() {
+      const systolic = +document.getElementById('bpSys').value;
+      const diastolic = +document.getElementById('bpDia').value;
+      if (!systolic || !diastolic) return toast('সিস্টোলিক ও ডায়াস্টোলিক প্রেশার দিন');
+      const d = computeBPLocally(systolic, diastolic);
+      renderBPResult(d);
+    }
+
+    document.getElementById('bpCheckBtn').onclick = executeBP;
+    executeBP();
+  },
+
+  // ─── 18. DIABETES (ডায়াবেটিস ও সুগার ম্যানেজার) ──────────────
+  diabetes() {
+    app.innerHTML = `
+      <div style="max-width:540px;margin:0 auto 24px;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <h3 style="font-size:22px;margin-bottom:6px;">ডায়াবেটিস ও রক্তের সুগার ট্র্যাকার</h3>
+          <p style="color:var(--ink-secondary);font-size:14px;">ফাস্টিং, খাবার ২ ঘণ্টা পর বা ৩ মাসের গড় সুগার (HbA1c) দিয়ে বর্তমান অবস্থা ও করণীয় জানুন।</p>
+        </div>
+
+        <!-- Tab selection for test type -->
+        <div class="filter-chips" style="justify-content:center;margin-bottom:20px;">
+          <button class="f-chip active" id="tabFasting" onclick="setDiaTab('fasting')">ফাস্টিং (না খেয়ে)</button>
+          <button class="f-chip" id="tabPostMeal" onclick="setDiaTab('post_meal')">খাবার ২ ঘণ্টা পর</button>
+          <button class="f-chip" id="tabHba1c" onclick="setDiaTab('hba1c')">HbA1c (৩ মাসের গড়)</button>
+          <button class="f-chip" id="tabHypo" onclick="setDiaTab('hypo')" style="color:#DC2626;">🚨 সুগার কমে গেলে</button>
+        </div>
+
+        <div id="diaInputSection">
+          <div style="display:grid;grid-template-columns:2fr 1fr;gap:12px;margin-bottom:16px;">
+            <div class="form-group">
+              <label class="form-label" id="diaValLabel">সুগারের রিডিং (mmol/L)</label>
+              <input class="form-input" type="number" step="0.1" id="diaVal" value="6.2">
+            </div>
+            <div class="form-group" id="diaUnitGroup">
+              <label class="form-label">ইউনিট</label>
+              <select class="form-select" id="diaUnit">
+                <option value="mmol" selected>mmol/L</option>
+                <option value="mgdl">mg/dL</option>
+              </select>
+            </div>
+          </div>
+
+          <button class="btn-primary" id="diaCheckBtn" style="width:100%;background:#DC2626;box-shadow:0 8px 20px rgba(220,38,38,0.25);">
+            <span>🩸 ফলাফল ও ডায়েট গাইড দেখুন</span> <span>→</span>
+          </button>
+        </div>
+      </div>
+      <div id="diaOut"></div>
+    `;
+
+    let currentDiaTab = 'fasting';
+    window.setDiaTab = (tab) => {
+      currentDiaTab = tab;
+      ['tabFasting', 'tabPostMeal', 'tabHba1c', 'tabHypo'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.remove('active');
+      });
+
+      const activeEl = tab === 'fasting' ? 'tabFasting' : (tab === 'post_meal' ? 'tabPostMeal' : (tab === 'hba1c' ? 'tabHba1c' : 'tabHypo'));
+      document.getElementById(activeEl).classList.add('active');
+
+      const inputSec = document.getElementById('diaInputSection');
+      const valInput = document.getElementById('diaVal');
+      const unitGroup = document.getElementById('diaUnitGroup');
+      const valLabel = document.getElementById('diaValLabel');
+
+      if (tab === 'hypo') {
+        inputSec.style.display = 'none';
+        renderHypoProtocol();
+        return;
+      }
+
+      inputSec.style.display = 'block';
+      if (tab === 'hba1c') {
+        valLabel.textContent = 'HbA1c মান (%)';
+        valInput.value = '6.4';
+        unitGroup.style.display = 'none';
+      } else if (tab === 'fasting') {
+        valLabel.textContent = 'ফাস্টিং সুগার (খালি পেটে)';
+        valInput.value = '6.2';
+        unitGroup.style.display = 'block';
+      } else {
+        valLabel.textContent = 'খাবার ২ ঘণ্টা পরের সুগার (2h ABF)';
+        valInput.value = '9.4';
+        unitGroup.style.display = 'block';
+      }
+      executeDiabetes();
+    };
+
+    function executeDiabetes() {
+      const value = +document.getElementById('diaVal').value;
+      const unit = document.getElementById('diaUnit').value;
+      if (!value) return toast('সুগারের মান লিখুন');
+      const d = computeDiabetesLocally(currentDiaTab, value, unit);
+      renderDiabetesResult(d);
+    }
+
+    document.getElementById('diaCheckBtn').onclick = executeDiabetes;
+    executeDiabetes();
+  },
+
+  // ─── 19. LIPID (কোলেস্টেরল ও হার্ট রিস্ক) ─────────────────────
+  lipid() {
+    app.innerHTML = `
+      <div style="max-width:540px;margin:0 auto 24px;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <h3 style="font-size:22px;margin-bottom:6px;">কোলেস্টেরল ও হার্ট রিস্ক গাইড</h3>
+          <p style="color:var(--ink-secondary);font-size:14px;">লিপিড প্রোফাইলের চারটি উপাদান লিখে আপনার হৃদরোগের ঝুঁকি ও ফ্যাটি লিভারের সম্ভাবনা যাচাই করুন।</p>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div class="form-group">
+            <label class="form-label">টোটাল কোলেস্টেরল (mg/dL)</label>
+            <input class="form-input" type="number" id="lipTotal" value="215">
+            <span style="font-size:11.5px;color:var(--ink-muted);">আদর্শ: < ২০০ mg/dL</span>
+          </div>
+          <div class="form-group">
+            <label class="form-label">এলডিএল / LDL (mg/dL)</label>
+            <input class="form-input" type="number" id="lipLdl" value="138">
+            <span style="font-size:11.5px;color:var(--ink-muted);">খারাপ চর্বি: < ১০০ mg/dL</span>
+          </div>
+          <div class="form-group">
+            <label class="form-label">এইচডিএল / HDL (mg/dL)</label>
+            <input class="form-input" type="number" id="lipHdl" value="42">
+            <span style="font-size:11.5px;color:var(--ink-muted);">ভালো চর্বি: > ৪০ (পুরুষ), > ৫০ (নারী)</span>
+          </div>
+          <div class="form-group">
+            <label class="form-label">ট্রাইগ্লিসারাইড / TG (mg/dL)</label>
+            <input class="form-input" type="number" id="lipTg" value="190">
+            <span style="font-size:11.5px;color:var(--ink-muted);">আদর্শ: < ১৫০ mg/dL</span>
+          </div>
+        </div>
+
+        <button class="btn-primary" id="lipCheckBtn" style="width:100%;margin-top:16px;background:#0F766E;">
+          <span>❤️ লিপিড প্রোফাইল রিপোর্ট বিশ্লেষণ করুন</span> <span>→</span>
+        </button>
+      </div>
+      <div id="lipOut"></div>
+    `;
+
+    function executeLipid() {
+      const total = +document.getElementById('lipTotal').value;
+      const ldl = +document.getElementById('lipLdl').value;
+      const hdl = +document.getElementById('lipHdl').value;
+      const tg = +document.getElementById('lipTg').value;
+      if (!total || !ldl || !hdl || !tg) return toast('সবগুলো মান পূরণ করুন');
+      const d = computeLipidLocally(total, ldl, hdl, tg);
+      renderLipidResult(d);
+    }
+
+    document.getElementById('lipCheckBtn').onclick = executeLipid;
+    executeLipid();
+  },
+
+  // ─── 20. SYMPTOMS & EMERGENCIES (কোন অবস্থায় কী করবেন) ─────
+  symptoms() {
+    app.innerHTML = `
+      <div style="max-width:700px;margin:0 auto 24px;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <h3 style="font-size:22px;margin-bottom:6px;">কোন অবস্থায় কী করবেন (জরুরি মেডিসিন গাইড)</h3>
+          <p style="color:var(--ink-secondary);font-size:14px;">হার্ট অ্যাটাক, স্ট্রোক, হঠাৎ প্রেশার পরিবর্তন ও জটিল লক্ষণের বৈজ্ঞানিক ফার্স্ট এইড ও করণীয়।</p>
+        </div>
+
+        <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:24px;">
+          <button class="action-pill active" onclick="showEmergencyTab('chest_pain')">💔 বুকে ব্যথা (হার্ট বনাম গ্যাস)</button>
+          <button class="action-pill" onclick="showEmergencyTab('stroke_fast')">🧠 স্ট্রোকের FAST নিয়ম</button>
+          <button class="action-pill" onclick="showEmergencyTab('sudden_bp_drop')">📉 হঠাৎ প্রেশার কমে যাওয়া</button>
+          <button class="action-pill" onclick="showEmergencyTab('fever_convulsion')">🌡️ উচ্চ জ্বর ও খিঁচুনি</button>
+        </div>
+
+        <div id="emgCardContainer"></div>
+      </div>
+    `;
+
+    setLoading('emgCardContainer', 'জরুরি গাইড লোড হচ্ছে…');
+    apiFetch('/api/emergency/').then(data => {
+      window._emgData = data.emergencies;
+      showEmergencyTab('chest_pain');
+    }).catch(e => {
+      // Emergency data fallback
+      showEmergencyTab('chest_pain');
+    });
+
+    window.showEmergencyTab = (id) => {
+      if (!window._emgData) return;
+      const item = window._emgData.find(e => e.id === id);
+      if (!item) return;
+      renderEmergencyCard(item);
+    };
+  },
+
+  // ─── 21. MEDICINE FAQ (বহুল জিজ্ঞাসিত প্রশ্ন) ───────────────
+  medicinefaq() {
+    app.innerHTML = `
+      <div style="max-width:680px;margin:0 auto 24px;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <h3 style="font-size:22px;margin-bottom:6px;">মেডিসিনের বহুল জিজ্ঞাসিত প্রশ্ন ও উত্তর</h3>
+          <p style="color:var(--ink-secondary);font-size:14px;">প্রেশার, ডায়াবেটিস, গ্যাস্ট্রিক ও ওষুধের সাধারণ ভুল ধারণাগুলোর চিকিৎসাবিজ্ঞানসম্মত ব্যাখ্যা।</p>
+        </div>
+
+        <div class="form-group" style="position:relative;margin-bottom:20px;">
+          <input class="form-input" type="text" id="faqSearchInput" placeholder="প্রশ্ন খুঁজুন: প্রেশার, ডায়াবেটিস, গ্যাস্ট্রিক, কিডনি, অ্যান্টিবায়োটিক…">
+        </div>
+
+        <div id="faqListOut"></div>
+      </div>
+    `;
+
+    function loadFaqs(q='') {
+      setLoading('faqListOut', 'প্রশ্নোত্তর লোড হচ্ছে…');
+      apiFetch(`/api/medicine-faq/?q=${encodeURIComponent(q)}`).then(d => {
+        renderMedicineFAQ(d.faqs);
+      }).catch(e => renderError(e.message, 'faqListOut'));
+    }
+
+    document.getElementById('faqSearchInput').addEventListener('input', (e) => {
+      loadFaqs(e.target.value.trim());
+    });
+
+    loadFaqs();
+  },
+
+  // ─── 22. TELEMEDICINE (ডা. সোহাগ হাসান ডক্টর প্রোফাইল) ──────────
+  telemedicine() {
+    app.innerHTML = `
+      <div style="max-width:760px;margin:0 auto 24px;">
+        <!-- Doctor Profile Showcase Card -->
+        <div class="result-card" style="background:#fff;border-radius:24px;padding:32px;margin-bottom:28px;box-shadow:0 12px 36px rgba(15,40,30,0.06);display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:center;">
+          <div style="width:145px;height:180px;border-radius:18px;overflow:hidden;box-shadow:0 10px 28px rgba(0,0,0,0.12);border:2px solid var(--border);flex:none;">
+            <img src="/static/images/doctor_sohag.jpg" alt="ডা. সোহাগ হাসান" style="width:100%;height:100%;object-fit:cover;">
+          </div>
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px;">
+              <span class="badge badge-green">রেজিস্টার্ড চিকিৎসক (BM&DC)</span>
+              <span class="badge badge-blue">MBBS (DU)</span>
+            </div>
+            <h2 style="font-size:26px;color:var(--ink);margin-bottom:4px;">ডা. সোহাগ হাসান</h2>
+            <p style="font-size:15px;color:var(--green);font-weight:700;font-style:italic;margin-bottom:12px;">
+              “Caring for patients with dedication”
+            </p>
+            
+            <div style="font-size:13.5px;color:var(--ink-secondary);line-height:1.7;margin-bottom:16px;">
+              <div>🏥 <b>ভূমিকা:</b> রেজিস্টার্ড চিকিৎসক (সাবেক ইন্টার্ন চিকিৎসক, গোপালগঞ্জ মেডিকেল কলেজ হাসপাতাল)</div>
+              <div>🎓 <b>মেডিকেল কলেজ:</b> গোপালগঞ্জ মেডিকেল কলেজ (ভর্তি: ২০২০)</div>
+              <div>🏛️ <b>কলেজ:</b> সরকারি আনন্দ মোহন কলেজ</div>
+              <div>📍 <b>ঠিকানা:</b> ফুলপুর, ময়মনসিংহ</div>
+            </div>
+
+            <!-- Direct Contact Actions (Call, WhatsApp, Email) -->
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <a href="https://wa.me/8801785949700?text=%E0%A6%86%E0%A6%B8%E0%A6%B8%E0%A6%BE%E0%A6%B2%E0%A6%BE%E0%A6%AE%E0%A7%81%20%E0%A6%86%E0%A6%B2%E0%A6%BE%E0%A6%87%E0%A6%95%E0%A7%81%E0%A6%AE%20%E0%A6%A1%E0%A6%BE.%20%E0%A6%B8%E0%A7%8B%E0%A6%B9%E0%A6%BE%E0%A6%97%20%E0%A6%B8%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%B0%2C%20%E0%A6%86%E0%A6%AE%E0%A6%BF%20%E0%A6%86%E0%A6%AA%E0%A6%A8%E0%A6%BE%E0%A6%B0%20%E0%A6%B8%E0%A6%BE%E0%A6%A5%E0%A7%87%20%E0%A6%B8%E0%A7%8D%E0%A6%AC%E0%A6%BE%E0%A6%B8%E0%A7%8D%E0%A6%A5%E0%A7%8D%E0%A6%AF%20%E0%A6%AA%E0%A6%B0%E0%A6%BE%E0%A6%AE%E0%A6%B0%E0%A7%8D%E0%A6%B6%E0%A7%87%E0%A6%B0%20%E0%A6%9C%E0%A6%A8%E0%A7%8D%E0%A6%AF%20%E0%A6%AF%E0%A7%8B%E0%A6%97%E0%A6%BE%E0%A6%AF%E0%A7%8B%E0%A6%97%20%E0%A6%95%E0%A6%B0%E0%A6%9B%E0%A6%BF%E0%A5%A4" target="_blank" class="btn-primary" style="background:#25D366;box-shadow:0 6px 18px rgba(37,211,102,0.3);font-size:14px;padding:9px 18px;">
+                <span>💬 হোয়াটসঅ্যাপ: 01785-949700</span>
+              </a>
+              <a href="tel:01625946298" class="action-pill" style="font-weight:700;color:var(--ink);border-color:var(--border);">
+                <span>📞 কল করুন: 01625-946298</span>
+              </a>
+              <a href="mailto:sohaghasansarkar05@gmail.com" class="action-pill" style="font-weight:600;color:var(--ink-secondary);">
+                <span>✉️ ইমেইল</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Direct Contact Form -->
+        <div class="result-card" style="background:#fff;border-radius:20px;padding:28px;">
+          <h3 style="font-size:18px;color:var(--ink);margin-bottom:6px;">সরাসরি পরামর্শ ও বার্তা পাঠান</h3>
+          <p style="font-size:13.5px;color:var(--ink-secondary);margin-bottom:20px;">
+            আপনার সমস্যা বা স্বাস্থ্য জিজ্ঞাসা নিচে লিখে পাঠান। সরাসরি ডা. সোহাগ হাসানের হোয়াটসঅ্যাপে বার্তা পৌঁছে যাবে।
+          </p>
+
+          <form id="telemedForm" onsubmit="handleTelemedSubmit(event)">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+              <div class="form-group">
+                <label class="form-label">আপনার নাম *</label>
+                <input class="form-input" type="text" id="tmName" placeholder="যেমন: মো. কামরুল হাসান" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">মোবাইল নম্বর *</label>
+                <input class="form-input" type="tel" id="tmPhone" placeholder="01XXXXXXXXX" pattern="01[3-9][0-9]{8}" required>
+              </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+              <div class="form-group">
+                <label class="form-label">বয়স</label>
+                <input class="form-input" type="number" id="tmAge" placeholder="যেমন: ৪৫">
+              </div>
+              <div class="form-group">
+                <label class="form-label">লিঙ্গ</label>
+                <select class="form-select" id="tmGender">
+                  <option value="পুরুষ">পুরুষ</option>
+                  <option value="মহিলা">মহিলা</option>
+                  <option value="অন্যান্য">অন্যান্য</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom:18px;">
+              <label class="form-label">সমস্যা বা স্বাস্থ্য জিজ্ঞাসা লিখুন *</label>
+              <textarea class="form-input" id="tmComplaint" rows="3" placeholder="আপনার সমস্যা, পূর্বের রিপোর্ট বা ওষুধ সম্পর্কে বিস্তারিত লিখুন..." required style="resize:vertical;"></textarea>
+            </div>
+
+            <button class="btn-primary" type="submit" id="tmSubmitBtn" style="width:100%;background:#0E7A47;box-shadow:0 8px 24px rgba(14,122,71,0.25);font-size:16px;">
+              <span>📲 ডা. সোহাগ হাসানের সাথে যোগাযোগ করুন</span> <span>→</span>
+            </button>
+          </form>
+
+          <div id="tmSuccessOut" style="display:none;margin-top:20px;"></div>
+        </div>
+      </div>
+    `;
+
+    window.handleTelemedSubmit = async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('tmName').value.trim();
+      const phone = document.getElementById('tmPhone').value.trim();
+      const age = document.getElementById('tmAge').value.trim();
+      const gender = document.getElementById('tmGender').value;
+      const chief_complaint = document.getElementById('tmComplaint').value.trim();
+
+      const btn = document.getElementById('tmSubmitBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<span>সংরক্ষণ হচ্ছে…</span>';
+
+      const waMsg = `আসসালামু আলাইকুম ডা. সোহাগ স্যার,\nআমি আপনার ওয়েবসাইট থেকে সরাসরি যোগাযোগ করছি।\n\n👤 নাম: ${name}\n📞 ফোন: ${phone}\n🎂 বয়স/লিঙ্গ: ${age || 'উল্লেখ নেই'} / ${gender || 'উল্লেখ নেই'}\n🩺 সমস্যা: ${chief_complaint}`;
+      const waUrl = `https://wa.me/8801785949700?text=${encodeURIComponent(waMsg)}`;
+
+      try {
+        await apiFetch('/api/telemedicine/', {
+          method: 'POST',
+          body: { name, phone, age, gender, chief_complaint }
+        }).catch(() => {});
+      } catch(err) {}
+
+      btn.disabled = false;
+      btn.innerHTML = '<span>📲 ডা. সোহাগ হাসানের সাথে যোগাযোগ করুন</span> <span>→</span>';
+
+      const out = document.getElementById('tmSuccessOut');
+      out.style.display = 'block';
+      out.innerHTML = `
+        <div class="result-card" style="background:#EBF7EE;border-color:var(--green);padding:24px;border-radius:16px;text-align:center;">
+          <div style="font-size:40px;margin-bottom:8px;">✓</div>
+          <h4 style="color:var(--green);font-size:20px;margin-bottom:6px;">ধন্যবাদ ${name}! আপনার বার্তা প্রস্তুত</h4>
+          <p style="font-size:14px;color:var(--ink-secondary);margin-bottom:16px;">
+            সরাসরি ডা. সোহাগ হাসানের হোয়াটসঅ্যাপে বার্তাটি পাঠাতে নিচের বাটনে ক্লিক করুন:
+          </p>
+          <a href="${waUrl}" target="_blank" class="btn-primary" style="background:#25D366;box-shadow:0 8px 24px rgba(37,211,102,0.3);font-size:16px;">
+            <span>💬 হোয়াটসঅ্যাপে বার্তা পাঠান</span> <span>→</span>
+          </a>
+        </div>
+      `;
+      out.scrollIntoView({ behavior: 'smooth' });
+    };
+  }
+};
+
+// ═══════════════════════════════════════════════════════════════
+// RESULT RENDERERS WITH CALENDAR / PRINT / SHARE
+// ═══════════════════════════════════════════════════════════════
+
+function renderVaccineResult(data, dob) {
+  const container = document.getElementById('vacResult');
+  if (!container) return;
+  const dateFormatted = new Date(dob).toLocaleDateString('bn-BD', { day:'numeric', month:'long', year:'numeric' });
+
+  // Prep calendar events
+  const calEvents = data.schedule.map(s => ({
+    date: s.date,
+    title: `টিকা: ${s.items.map(it => it.name).join(', ')} (${s.when})`,
+    desc: `প্রতিরোধ করে: ${s.items.map(it => it.protects).join(', ')}. সোহাগ চয়েস টিকার রিমাইন্ডার।`
+  }));
+
+  container.innerHTML = `
+    <!-- Action Bar: Calendar & Print & Lead Gate -->
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin:24px 0 16px;">
+      <span class="badge badge-green" style="font-size:13px;">জন্মতারিখ: ${dateFormatted}</span>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button class="btn-primary" id="saveCalBtn" style="padding:8px 18px;font-size:13.5px;background:var(--ink);">
+          <span>📅 ক্যালেন্ডারে সেভ (.ics)</span>
+        </button>
+        <button class="btn-ghost" id="printVacBtn" style="padding:8px 18px;font-size:13.5px;">
+          <span>🖨️ প্রিন্ট / PDF</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Vaccine Schedule Table / Cards -->
+    <div id="vacPrintable">
+      ${data.schedule.map(s => `
+        <div class="vac-row">
+          <div class="vac-date">
+            <div class="day">${new Date(s.date).getDate()}</div>
+            <div class="month">${new Date(s.date).toLocaleDateString('bn-BD', { month:'short' })}</div>
+            <div style="font-size:11px;color:var(--ink-muted);">${new Date(s.date).getFullYear()}</div>
+          </div>
+          <div style="flex:1;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+              <b style="font-size:14.5px;color:var(--ink);">${s.when}</b>
+              <span class="badge ${s.status === 'upcoming' ? 'badge-blue' : (s.status === 'overdue' ? 'badge-red' : 'badge-green')}">
+                ${s.status === 'upcoming' ? 'আসছে' : (s.status === 'overdue' ? 'মিস হয়েছে' : 'নির্ধারিত')}
+              </span>
+            </div>
+            ${s.items.map(it => `
+              <div style="font-size:13.5px;color:var(--ink-secondary);padding:3px 0;">
+                💉 <b>${it.name}</b> — <span style="color:var(--ink-muted);">${it.protects}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+
+  document.getElementById('saveCalBtn').onclick = () => {
+    downloadIcs(calEvents, `vaccine-schedule-${dob}.ics`);
+  };
+  document.getElementById('printVacBtn').onclick = () => {
+    openPrintPage(`শিশুর টিকার সময়সূচি (${dateFormatted})`, document.getElementById('vacPrintable').innerHTML);
+  };
+}
+
+function renderMilestones(data, months) {
+  const el = document.getElementById('msResult');
+  if (!el) return;
+  el.innerHTML = `
+    <div style="margin-bottom:16px;">
+      <span class="badge badge-green" style="font-size:13.5px;">শিশুর বয়স: প্রায় ${toBn(months)} মাস</span>
+    </div>
+    ${data.milestones.map(ms => `
+      <div class="result-card" style="background:#fff;margin-top:14px;">
+        <strong style="font-size:17px;color:var(--ink);display:block;margin-bottom:10px;">${ms.range} বয়সের বিকাশ:</strong>
+        <ul style="padding-left:22px;color:var(--ink-secondary);font-size:14px;line-height:1.7;">
+          ${ms.skills.map(s => `<li>${s}</li>`).join('')}
+        </ul>
+        <div class="result-card" style="background:#F4FBF5;margin-top:14px;padding:14px;border-color:rgba(14,122,71,0.2);">
+          <b style="color:var(--green)">🎮 খেলা ও উদ্দীপনার টিপস:</b>
+          <p style="font-size:13.5px;color:var(--ink-secondary);margin-top:4px;">${ms.play_tip}</p>
+        </div>
+      </div>
+    `).join('')}
+  `;
+}
+
+function renderGrowth(d) {
+  const el = document.getElementById('gwResult');
+  if (!el) return;
+  const isNormal = d.weight_status === 'normal';
+  el.innerHTML = `
+    <div class="result-card" style="text-align:center;padding:28px;background:#fff;">
+      <div class="num-big" style="color:${isNormal ? 'var(--green)' : 'var(--rose)'};">${d.weight_label}</div>
+      <p style="font-size:14px;color:var(--ink-secondary);margin-top:6px;">${d.advice}</p>
+    </div>
+    <div class="result-card" style="background:#FAF8F5;margin-top:16px;">
+      <table class="data-table">
+        <tr><td>WHO অনুমোদিত স্বাভাবিক ওজন</td><td><b>${d.who_range.low} – ${d.who_range.high} কেজি</b></td></tr>
+        <tr><td>WHO আদর্শ ওজন (মিডিয়ান)</td><td>${d.who_range.median} কেজি</td></tr>
+        <tr><td>আপনার শিশুর বর্তমান ওজন</td><td><b style="color:${isNormal ? 'var(--green)' : 'var(--rose)'}">${d.weight} কেজি</b></td></tr>
+        ${d.bmi ? `<tr><td>বডি মাস ইনডেক্স (BMI)</td><td>${d.bmi}</td></tr>` : ''}
+      </table>
+    </div>
+  `;
+}
+
+function renderBabyFood(d) {
+  const el = document.getElementById('bfResult');
+  if (!el) return;
+  el.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin:20px 0 16px;">
+      <span class="badge badge-green" style="font-size:13.5px;">বয়স: ${d.menu.range}</span>
+      <button class="btn-ghost" onclick="openPrintPage('বাচ্চার খাবার তালিকা (${d.menu.range})', document.getElementById('bfPrintArea').innerHTML)">
+        <span>🖨️ প্রিন্ট / সেভ করুন</span>
+      </button>
+    </div>
+    <div id="bfPrintArea">
+      <div class="result-card" style="background:#FAF8F5;margin-top:0;margin-bottom:16px;border-left:4px solid var(--green);">
+        <strong style="color:var(--green)">📌 জরুরি পরামর্শ:</strong>
+        <p style="font-size:14px;color:var(--ink-secondary);margin-top:4px;">${d.menu.note}</p>
+      </div>
+      <h4 style="margin-bottom:10px;">এই বয়সের অনুমোদিত খাবার:</h4>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;">
+        ${d.menu.foods.map(f => `<span class="badge badge-green" style="font-size:13px;">${f}</span>`).join('')}
+      </div>
+      <h4 style="margin-bottom:10px;">সাপ্তাহিক রুটিন মেনু:</h4>
+      <table class="data-table" style="background:#fff;border-radius:12px;overflow:hidden;box-shadow:var(--shadow-sm);">
+        <thead><tr><th>বার</th><th>সকাল</th><th>দুপুর</th><th>বিকাল/রাত</th></tr></thead>
+        <tbody>
+          ${d.menu.weekly.map(w => `
+            <tr>
+              <td><b>${w.day}</b></td>
+              <td>${w.morning}</td>
+              <td>${w.noon}</td>
+              <td>${w.evening}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+function renderNames(d) {
+  const el = document.getElementById('namesResult');
+  if (!el) return;
+  if (!d.names.length) {
+    el.innerHTML = `<p style="text-align:center;padding:30px;color:var(--ink-muted);">কোনো নাম খুঁজে পাওয়া যায়নি।</p>`;
+    return;
+  }
+  el.innerHTML = `
+    <div style="font-size:13px;color:var(--ink-muted);margin-bottom:14px;">মোট ${toBn(d.count)}টি নাম পাওয়া গেছে:</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;">
+      ${d.names.map(n => `
+        <div class="result-card" style="margin-top:0;background:#fff;border-radius:16px;">
+          <b style="font-size:22px;color:var(--ink);">${n.name}</b>
+          <div style="font-size:13px;color:var(--ink-muted);margin-top:2px;">${n.english}</div>
+          <div style="font-size:14px;color:var(--ink-secondary);margin-top:8px;">অর্থ: <b>${n.meaning}</b></div>
+          <div style="display:flex;gap:6px;margin-top:10px;">
+            <span class="badge badge-green">${n.gender}</span>
+            <span class="badge badge-blue">${n.type}</span>
+            <span class="badge badge-amber">${n.origin}</span>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function renderCalories(d) {
+  const el = document.getElementById('calResult');
+  if (!el) return;
+  el.innerHTML = `
+    <div style="font-size:13px;color:var(--ink-muted);margin-bottom:12px;">খাবারের তালিকা (${toBn(d.count)}টি):</div>
+    <div style="display:grid;gap:8px;">
+      ${d.foods.map(f => `
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:#fff;border:1px solid var(--border);border-radius:12px;">
+          <div>
+            <b style="font-size:14.5px;color:var(--ink);">${f.name}</b>
+            <span class="badge badge-amber" style="margin-left:8px;font-size:11px;">${f.category}</span>
+          </div>
+          <div style="text-align:right;">
+            <b style="font-size:16px;color:var(--green)">${toBn(f.calories)}</b> <span style="font-size:12px;color:var(--ink-muted);">ক্যালরি</span>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function renderDiet(d) {
+  const el = document.getElementById('dietResult');
+  if (!el) return;
+  el.innerHTML = `
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;text-align:center;margin-bottom:20px;">
+      <div class="result-card" style="background:#fff;margin-top:0;">
+        <div class="num-big" style="font-size:32px;">${toBn(d.bmr)}</div>
+        <div style="font-size:12px;color:var(--ink-muted);">BMR (বেসিক)</div>
+      </div>
+      <div class="result-card" style="background:#fff;margin-top:0;">
+        <div class="num-big" style="font-size:32px;">${toBn(d.tdee)}</div>
+        <div style="font-size:12px;color:var(--ink-muted);">TDEE (মোট শক্তি)</div>
+      </div>
+      <div class="result-card" style="background:var(--green-soft);border-color:var(--green);margin-top:0;">
+        <div class="num-big" style="font-size:32px;color:var(--green);">${toBn(d.target)}</div>
+        <div style="font-size:12px;color:var(--green);font-weight:700;">${d.goal_label}</div>
+      </div>
+    </div>
+    <div class="result-card" style="background:#fff;margin-bottom:20px;">
+      <b style="font-size:15px;">দৈনিক পুষ্টির অনুপাত (ম্যাক্রোস):</b>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;text-align:center;margin-top:12px;">
+        <div style="padding:10px;background:#FAF8F5;border-radius:10px;">
+          <b style="color:var(--blue);font-size:18px;">${toBn(d.macros.protein_g)}g</b>
+          <span style="font-size:12px;display:block;color:var(--ink-muted);">প্রোটিন</span>
+        </div>
+        <div style="padding:10px;background:#FAF8F5;border-radius:10px;">
+          <b style="color:var(--amber);font-size:18px;">${toBn(d.macros.carb_g)}g</b>
+          <span style="font-size:12px;display:block;color:var(--ink-muted);">শর্করা</span>
+        </div>
+        <div style="padding:10px;background:#FAF8F5;border-radius:10px;">
+          <b style="color:var(--rose);font-size:18px;">${toBn(d.macros.fat_g)}g</b>
+          <span style="font-size:12px;display:block;color:var(--ink-muted);">ফ্যাট</span>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderPregnancy(d) {
+  const el = document.getElementById('pregResult');
+  if (!el) return;
+  const trimNames = ['', '১ম ট্রাইমেস্টার', '২য় ট্রাইমেস্টার', '৩য় ট্রাইমেস্টার'];
+  const dueFormatted = new Date(d.due_date).toLocaleDateString('bn-BD', { day:'numeric', month:'long', year:'numeric' });
+
+  el.innerHTML = `
+    <div class="result-card" style="background:#fff;text-align:center;padding:32px;border-top:4px solid var(--c-mom);margin-top:0;">
+      <div class="num-big" style="color:var(--c-mom)">${toBn(d.week)} সপ্তাহ</div>
+      <p style="font-size:16px;color:var(--ink);font-weight:700;margin-top:6px;">${trimNames[d.trimester]} · আর মাত্র ${toBn(d.weeks_left)} সপ্তাহ বাকি</p>
+      <p style="font-size:14px;color:var(--ink-secondary);margin-top:4px;">সম্ভাব্য ডেলিভারির তারিখ: <b>${dueFormatted}</b></p>
+      <div style="margin-top:18px;">
+        <button class="btn-primary" onclick="downloadIcs([{date:'${d.due_date}',title:'সম্ভাব্য প্রসবের তারিখ',desc:'সোহাগ চয়েস গর্ভাবস্থার গাইড'}],'delivery-due-date.ics')" style="background:var(--c-mom);">
+          <span>📅 ক্যালেন্ডারে সেভ রাখুন (.ics)</span>
+        </button>
+      </div>
+    </div>
+    <div class="result-card" style="background:#FAF8F5;margin-top:16px;">
+      <b style="font-size:15px;color:var(--ink);">শিশুর আনুমানিক আকার:</b>
+      <p style="font-size:14.5px;color:var(--ink-secondary);margin-top:4px;">🍎 ${d.info.size}</p>
+      <b style="font-size:15px;color:var(--ink);display:block;margin-top:12px;">এই সপ্তাহের সাধারণ লক্ষণ:</b>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;">
+        ${(d.info.symptoms||[]).map(s => `<span class="badge badge-amber">${s}</span>`).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function renderSupplement(d) {
+  const el = document.getElementById('suppResult');
+  if (!el) return;
+  if (!d.results.length) {
+    el.innerHTML = `
+      <div class="result-card" style="background:#F4FBF5;border-color:var(--green);text-align:center;padding:24px;margin-top:20px;">
+        <h4 style="color:var(--green)">✓ আপনার কোনো জরুরি পুষ্টি ঘাটতির লক্ষণ দেখা যায়নি</h4>
+        <p style="font-size:13.5px;color:var(--ink-secondary);margin-top:6px;">পুষ্টিকর ও সুষম প্রাকৃতিক খাবার গ্রহণ অব্যাহত রাখুন।</p>
+      </div>
+    `;
+    return;
+  }
+  el.innerHTML = `
+    <h4 style="margin:24px 0 12px;">সম্ভাব্য প্রয়োজনীয় পুষ্টি উপাদান:</h4>
+    <div style="display:grid;gap:12px;">
+      ${d.results.map(r => `
+        <div class="result-card" style="background:#fff;margin-top:0;">
+          <b style="font-size:16px;color:var(--ink);">${r.name}</b>
+          <p style="font-size:13.5px;color:var(--ink-secondary);margin-top:6px;">🥗 <b>প্রাকৃতিক উৎস:</b> ${r.foods}</p>
+          <p style="font-size:12.5px;color:var(--amber);margin-top:4px;">📌 ${r.note}</p>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function renderRamadan(d) {
+  const el = document.getElementById('ramResult');
+  if (!el) return;
+  el.innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
+      <div class="result-card" style="background:#fff;margin-top:0;">
+        <b style="color:var(--green);font-size:15px;">স্বাস্থ্যকর সেহরি পরামর্শ:</b>
+        <ul style="padding-left:18px;margin-top:8px;font-size:13.5px;color:var(--ink-secondary);line-height:1.7;">
+          ${d.healthy_sehri.map(s => `<li>${s}</li>`).join('')}
+        </ul>
+      </div>
+      <div class="result-card" style="background:#fff;margin-top:0;">
+        <b style="color:var(--green);font-size:15px;">স্বাস্থ্যকর ইফতার পরামর্শ:</b>
+        <ul style="padding-left:18px;margin-top:8px;font-size:13.5px;color:var(--ink-secondary);line-height:1.7;">
+          ${d.healthy_iftar.map(s => `<li>${s}</li>`).join('')}
+        </ul>
+      </div>
+    </div>
+  `;
+}
+
+function renderBooks(d) {
+  const el = document.getElementById('booksListResult');
+  if (!el) return;
+  el.innerHTML = `
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;">
+      ${d.books.map(b => `
+        <div class="result-card" style="background:#fff;margin-top:0;border-radius:16px;">
+          <span style="font-size:28px;">📖</span>
+          <b style="font-size:15px;color:var(--ink);display:block;margin:6px 0;">${b.title}</b>
+          <p style="font-size:13px;color:var(--ink-secondary);">${b.desc}</p>
+          <div style="display:flex;gap:6px;margin-top:10px;">
+            <span class="badge badge-green">${b.age_group} বছর</span>
+            <span class="badge badge-blue">${b.interest}</span>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// INSTANT CLIENT-SIDE MEDICAL COMPUTATIONS (Zero Network Failure)
+// ═══════════════════════════════════════════════════════════════
+
+function computeBPLocally(sys, dia) {
+  let stage_id = 'normal';
+  if (sys > 180 || dia > 120) stage_id = 'crisis';
+  else if (sys >= 140 || dia >= 90) stage_id = 'stage2';
+  else if ((sys >= 130 && sys <= 139) || (dia >= 80 && dia <= 89)) stage_id = 'stage1';
+  else if ((sys >= 120 && sys <= 129) && dia < 80) stage_id = 'elevated';
+  else stage_id = 'normal';
+
+  const stages = {
+    normal: { id:'normal', name:'স্বাভাবিক রক্তচাপ (Normal)', badge_color:'#0E7A47', bg:'#EBF7EE', assessment:'আপনার রক্তচাপ সম্পূর্ণ আদর্শ ও স্বাস্থ্যকর পরিসীমায় রয়েছে।', action:'বর্তমান স্বাস্থ্যকর জীবনধারা বজায় রাখুন। নিয়মিত হাঁটুন ও বছরে অন্তত একবার প্রেশার চেক করুন।' },
+    elevated: { id:'elevated', name:'উচ্চ রক্তচাপের পূর্বাভাস (Elevated)', badge_color:'#D97706', bg:'#FEF3C7', assessment:'রক্তচাপ স্বাভাবিকের চেয়ে সামান্য বেশি। সতর্ক না হলে এটি স্থায়ী উচ্চ রক্তচাপে রূপ নিতে পারে।', action:'খাবারে বাড়তি কাঁচা লবণ সম্পূর্ণ পরিহার করুন। প্রতিদিন অন্তত ৩০ মিনিট ঘাম ঝরিয়ে দ্রুত হাঁটুন। স্ট্রেস বা মানসিক চাপ কমান।' },
+    stage1: { id:'stage1', name:'স্টেজ-১ হাইপারটেনশন (Stage 1 Hypertension)', badge_color:'#EA580C', bg:'#FFEDD5', assessment:'এটি প্রাথমিক পর্যায়ের উচ্চ রক্তচাপ। ধমনি ও হৃদযন্ত্রে বাড়তি চাপ পড়ছে।', action:'ডাক্তারের পরামর্শে DASH ডায়েট (ফলমূল, শাকসবজি, লো-ফ্যাট) শুরু করুন। লবণ <৫ গ্রাম/দিন সীমাবদ্ধ করুন।' },
+    stage2: { id:'stage2', name:'স্টেজ-২ হাইপারটেনশন (Stage 2 Hypertension)', badge_color:'#DC2626', bg:'#FEE2E2', assessment:'এটি নিশ্চিত উচ্চ রক্তচাপ। দীর্ঘমেয়াদে হার্ট অ্যাটাক, স্ট্রোক ও কিডনি ঝুঁকির শঙ্কা বহুগুণ বাড়িয়ে দেয়।', action:'অবিলম্বে একজন রেজিস্টার্ড মেডিসিন চিকিৎসকের কাছে পরামর্শ নিন। নিয়মিত ওষুধ সেবন এবং নিয়মিত প্রেশার রেকর্ড চার্ট সংরক্ষণ করুন।' },
+    crisis: { id:'crisis', name:'হাইপারটেনসিভ ক্রাইসিস (Hypertensive Crisis)', badge_color:'#7F1D1D', bg:'#FFE4E6', assessment:'🚨 চরম বিপজ্জনক ইমার্জেন্সি অবস্থা! মস্তিষ্কে রক্তক্ষরণ (স্ট্রোক) বা হার্ট ফেইলিয়োরের তাৎক্ষণিক ঝুঁকি।', action:'এক মুহূর্তও দেরি না করে নিকটস্থ হাসপাতালের জরুরি বিভাগে যান অথবা ৯৯৯ নম্বরে কল করুন।' },
+  };
+
+  return {
+    systolic: sys,
+    diastolic: dia,
+    stage: stages[stage_id],
+    pulse_pressure: sys - dia,
+    map: Math.round(((2 * dia + sys) / 3) * 10) / 10,
+    emergency_alert: stage_id === 'crisis',
+    dash_tips: [
+      'খাবারে কাঁচা লবণ ও প্রক্রিয়াজাত লবণাক্ত খাবার সম্পূর্ণ বর্জন করুন (দৈনিক < ৫ গ্রাম)।',
+      'পটাশিয়াম সমৃদ্ধ ফলমূল (কলা, ডাবের পানি, বেদানা) ও তাজা শাকসবজি বেশি খান।',
+      'প্রতিদিন অন্তত ৩০ মিনিট দ্রুত গতিতে হাঁটুন (সপ্তাহে ১৫০ মিনিট)।',
+      'ধূমপান ও জর্দা সম্পূর্ণ পরিহার করুন এবং পর্যাপ্ত ঘুমান (৭-৮ ঘণ্টা)।',
+    ]
+  };
+}
+
+function computeDiabetesLocally(test_type, val, unit) {
+  let mmol = val;
+  if (unit === 'mgdl' && test_type !== 'hba1c') {
+    mmol = Math.round((val / 18.0) * 10) / 10;
+  }
+
+  const is_hypo = (test_type !== 'hba1c') && (mmol < 3.9);
+  let category = 'স্বাভাবিক (Normal)';
+  let color = '#0E7A47';
+  let assessment = 'আপনার রক্তে সুগার চমৎকার নিয়ন্ত্রণে রয়েছে।';
+
+  if (test_type === 'hba1c') {
+    if (val < 5.7) { category = 'স্বাভাবিক (Normal)'; color = '#0E7A47'; assessment = 'আপনার ৩ মাসের গড় রক্তে সুগার চমৎকার নিয়ন্ত্রণে রয়েছে।'; }
+    else if (val <= 6.4) { category = 'প্রি-ডায়াবেটিস (Prediabetes)'; color = '#D97706'; assessment = 'ডায়াবেটিসের প্রাথমিক ঝুঁকি রয়েছে। এখনই খাবার ও হাঁটার অভ্যাসে সতর্ক হোন।'; }
+    else { category = 'ডায়াবেটিস (Diabetes)'; color = '#DC2626'; assessment = 'রক্তের সুগার অনিয়ন্ত্রিত। চিকিৎসকের পরামর্শে ওষুধ ও ইনসুলিন সমন্বয় জরুরি।'; }
+  } else if (test_type === 'fasting') {
+    if (mmol < 5.6) { category = 'স্বাভাবিক (Normal)'; color = '#0E7A47'; assessment = 'খালি পেটে আপনার রক্তে সুগার স্বাভাবিক পরিসীমায় রয়েছে।'; }
+    else if (mmol <= 6.9) { category = 'ইমপেয়ার্ড ফাস্টিং গ্লুকোজ (প্রি-ডায়াবেটিস)'; color = '#D97706'; assessment = 'ফাস্টিং সুগার সামান্য বেশি। ওজন কমানো ও লাইফস্টাইল পরিবর্তন আবশ্যক।'; }
+    else { category = 'ডায়াবেটিস (Diabetes)'; color = '#DC2626'; assessment = 'ফাস্টিং সুগার ৭.০ বা বেশি। এটি নিশ্চিত ডায়াবেটিসের নির্দেশক।'; }
+  } else {
+    if (mmol < 7.8) { category = 'স্বাভাবিক (Normal)'; color = '#0E7A47'; assessment = 'খাবারের পর সুগার স্বাভাবিক পরিসীমায় রয়েছে।'; }
+    else if (mmol <= 11.0) { category = 'ইমপেয়ার্ড গ্লুকোজ টলারেন্স (প্রি-ডায়াবেটিস)'; color = '#D97706'; assessment = 'খাবার পর সুগার বেশি উঠছে। মিষ্টি, কোমল পানীয় ও অতিরিক্ত ভাত বর্জন করুন।'; }
+    else { category = 'ডায়াবেটিস (Diabetes)'; color = '#DC2626'; assessment = 'খাবার পর সুগার ১১.১ বা তার বেশি। চিকিৎসকের পরামর্শে সঠিক চিকিৎসা শুরু করুন।'; }
+  }
+
+  return {
+    test_type,
+    input_value: val,
+    unit,
+    mmol_value: mmol,
+    category,
+    color,
+    assessment,
+    is_hypo,
+    lifestyle_rules: [
+      { title: 'থালায় শর্করা নিয়ন্ত্রণ', desc: 'থালা চার ভাগ করুন: অর্ধেকটা শাকসবজি ও সালাদ, এক চতুর্থাংশ প্রোটিন এবং মাত্র এক চতুর্থাংশ ভাত বা রুটি।' },
+      { title: 'খাওয়ার পর ১৫ মিনিট হাঁটা', desc: 'প্রধান খাবারের পর বসে না থেকে ১৫ মিনিট ধীরেসুস্থে হাঁটলে রক্তে সুগার স্পাইক ৩০% পর্যন্ত কমে যায়।' },
+      { title: 'মিষ্টি পানীয় ও জুস বর্জন', desc: 'বাজারের কোমল পানীয়, মিষ্টি চা ও প্যাকেটজাত জুস রক্তে তাৎক্ষণিক সুগার বাড়িয়ে দেয়।' },
+      { title: 'পায়ের নিয়মিত যত্ন', desc: 'ডায়াবেটিস রোগীদের পায়ে অনুভূতি কমে যায়। প্রতিদিন রাতে পা পরীক্ষা করুন এবং নরম জুতো পরুন।' },
+    ]
+  };
+}
+
+function computeLipidLocally(total, ldl, hdl, tg) {
+  const ratio = hdl > 0 ? Math.round((total / hdl) * 10) / 10 : 0;
+  const ratio_status = ratio < 4.0 ? 'আদর্শ' : (ratio <= 5.0 ? 'মধ্যম ঝুঁকি' : 'উচ্চ ঝুঁকি');
+
+  return {
+    cholesterol_ratio: ratio,
+    ratio_status: ratio_status,
+    evaluations: [
+      { name: 'টোটাল কোলেস্টেরল', value: `${total} mg/dL`, status: total < 200 ? 'স্বাভাবিক' : (total < 240 ? 'বর্ডারলাইন' : 'উচ্চ'), color: total < 200 ? '#0E7A47' : (total < 240 ? '#D97706' : '#DC2626') },
+      { name: 'এলডিএল (খারাপ চর্বি)', value: `${ldl} mg/dL`, status: ldl < 100 ? 'আদর্শ' : (ldl < 160 ? 'বর্ডারলাইন' : 'বিপজ্জনক'), color: ldl < 100 ? '#0E7A47' : (ldl < 160 ? '#D97706' : '#DC2626') },
+      { name: 'এইচডিএল (ভালো চর্বি)', value: `${hdl} mg/dL`, status: hdl >= 50 ? 'সুরক্ষিত' : (hdl >= 40 ? 'স্বাভাবিক' : 'কম (ঝুঁকিপূর্ণ)'), color: hdl >= 50 ? '#0E7A47' : (hdl >= 40 ? '#D97706' : '#DC2626') },
+      { name: 'ট্রাইগ্লিসারাইড', value: `${tg} mg/dL`, status: tg < 150 ? 'স্বাভাবিক' : (tg < 200 ? 'বর্ডারলাইন' : 'উচ্চ'), color: tg < 150 ? '#0E7A47' : (tg < 200 ? '#D97706' : '#DC2626') },
+    ],
+    fatty_liver_tips: [
+      'ভাজাভুজি, ডালডা ও ট্রান্স ফ্যাট পুরোপুরি বাদ দিন।',
+      'দৈনিক ক্যালরি কমান এবং সপ্তাহে অন্তত ১৫০ মিনিট অ্যারোবিক ব্যায়াম বা দ্রুত হাঁটা নিশ্চিত করুন।',
+      'ওমেগা-৩ সমৃদ্ধ খাবার খান (যেমন দেশি রুই-কাতলার চর্বিবিহীন অংশ, তিসির বীজ, চিয়া সিড ও আখরোট)।',
+      'অতিরিক্ত ফলমূলের ফ্রুক্টোজ এবং চিনি দেওয়া মিষ্টি সরাসরি লিভারে চর্বি হিসেবে জমা হয়।'
+    ]
+  };
+}
+
+// ═══════════════════════════════════════════════════════════════
+// MEDICINE RESULT RENDERERS
+// ═══════════════════════════════════════════════════════════════
+
+function renderBPResult(d) {
+  const el = document.getElementById('bpOut');
+  if (!el) return;
+
+  const isCrisis = d.emergency_alert;
+  const crisisAlert = isCrisis ? `
+    <div style="background:#FFE4E6;border:2px solid #DC2626;padding:20px;border-radius:18px;margin-bottom:20px;text-align:center;">
+      <span style="font-size:36px;">🚨</span>
+      <h3 style="color:#7F1D1D;margin:8px 0 4px;font-size:19px;">জরুরি ইমার্জেন্সি সতর্কতা (Hypertensive Crisis)</h3>
+      <p style="color:#991B1B;font-size:14px;line-height:1.6;margin-bottom:14px;">
+        আপনার রক্তচাপ বিপজ্জনক মাত্রায় উন্নীত হয়েছে। অবিলম্বে নিকটস্থ হাসপাতালের জরুরি বিভাগে যান অথবা ৯৯৯ এ কল করুন।
+      </p>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+        <a href="tel:999" class="btn-primary" style="background:#DC2626;padding:10px 24px;">📞 ৯৯৯ এ জরুরি কল</a>
+        <a href="https://wa.me/8801785949700?text=%E0%A6%86%E0%A6%B8%E0%A6%B8%E0%A6%BE%E0%A6%B2%E0%A6%BE%E0%A6%AE%E0%A7%81%20%E0%A6%86%E0%A6%B2%E0%A6%BE%E0%A6%87%E0%A6%95%E0%A7%81%E0%A6%AE%20%E0%A6%A1%E0%A6%BE.%20%E0%A6%B8%E0%A7%8B%E0%A6%B9%E0%A6%BE%E0%A6%97%20%E0%A6%B8%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%B0%2C%20%E0%A6%86%E0%A6%AE%E0%A6%BE%E0%A6%B0%20%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A7%87%E0%A6%B6%E0%A6%BE%E0%A6%B0%20${d.systolic}/${d.diastolic}%20%E0%A6%A6%E0%A7%87%E0%A6%96%E0%A6%BE%E0%A6%9A%E0%A7%8D%E0%A6%9B%E0%A7%87%E0%A5%A4%20%E0%A6%86%E0%A6%AA%E0%A6%A8%E0%A6%BE%E0%A6%B0%20%E0%A6%9C%E0%A6%B0%E0%A7%81%E0%A6%B0%E0%A6%BF%20%E0%A6%AA%E0%A6%B0%E0%A6%BE%E0%A6%AE%E0%A6%B0%E0%A7%8D%E0%A6%B6%20%E0%A6%9A%E0%A6%BE%E0%A6%87" target="_blank" class="btn-primary" style="background:#25D366;padding:10px 24px;">💬 ডা. সোহাগকে জরুরি জানান</a>
+      </div>
+    </div>
+  ` : '';
+
+  el.innerHTML = `
+    ${crisisAlert}
+    <div class="result-card" style="background:#fff;border-top:4px solid ${d.stage.badge_color};padding:28px;border-radius:20px;margin-top:0;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
+        <div>
+          <span class="badge" style="background:${d.stage.bg};color:${d.stage.badge_color};font-size:13px;font-weight:700;">
+            ${d.stage.name}
+          </span>
+          <div style="font-size:42px;font-weight:800;color:var(--ink);margin-top:8px;font-family:'Plus Jakarta Sans',sans-serif;">
+            ${toBn(d.systolic)} <span style="font-size:24px;color:var(--ink-muted);font-weight:400;">/</span> ${toBn(d.diastolic)} <span style="font-size:16px;color:var(--ink-secondary);font-weight:600;">mmHg</span>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <span style="font-size:12px;color:var(--ink-muted);display:block;">পালস প্রেশার (PP)</span>
+          <b style="font-size:18px;color:var(--ink);">${toBn(d.pulse_pressure)} mmHg</b>
+          <span style="font-size:12px;color:var(--ink-muted);display:block;margin-top:4px;">মিন আর্টেরিয়াল প্রেশার (MAP)</span>
+          <b style="font-size:15px;color:var(--ink);">${toBn(d.map)} mmHg</b>
+        </div>
+      </div>
+
+      <div style="background:${d.stage.bg};border-radius:14px;padding:16px;margin-bottom:20px;">
+        <strong style="color:${d.stage.badge_color};display:block;margin-bottom:4px;">চিকিৎসক মূল্যায়ন:</strong>
+        <p style="font-size:14px;color:var(--ink);line-height:1.6;margin-bottom:8px;">${d.stage.assessment}</p>
+        <strong style="color:${d.stage.badge_color};display:block;margin-bottom:4px;">আপনার করণীয়:</strong>
+        <p style="font-size:13.5px;color:var(--ink);line-height:1.6;">${d.stage.action}</p>
+      </div>
+
+      <!-- DASH Diet & Lifestyle Tips -->
+      <div style="margin-top:20px;border-top:1px solid var(--border);padding-top:16px;">
+        <h4 style="font-size:15px;color:var(--ink);margin-bottom:10px;">🌿 রক্তচাপ নিয়ন্ত্রণে বৈজ্ঞানিক DASH নিয়ম:</h4>
+        <ul style="padding-left:20px;font-size:13.5px;color:var(--ink-secondary);line-height:1.7;">
+          ${d.dash_tips.map(t => `<li>${t}</li>`).join('')}
+        </ul>
+      </div>
+
+      <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px;flex-wrap:wrap;">
+        <button class="action-pill" onclick="window.print()">🖨️ প্রেসার চার্ট প্রিন্ট করুন</button>
+        <a href="/tools/telemedicine/" class="btn-primary" style="background:#0E7A47;">
+          <span>👨‍⚕️ ডাক্তারের সাথে কথা বলুন</span> <span>→</span>
+        </a>
+      </div>
+    </div>
+  `;
+}
+
+function renderDiabetesResult(d) {
+  const el = document.getElementById('diaOut');
+  if (!el) return;
+
+  const hypoBanner = d.is_hypo ? `
+    <div style="background:#FEF2F2;border:2px solid #DC2626;padding:20px;border-radius:18px;margin-bottom:20px;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+        <span style="font-size:32px;">🚨</span>
+        <div>
+          <h4 style="color:#991B1B;font-size:18px;margin:0;">রক্তের সুগার অত্যন্ত কম (হাইপোগ্লাইসেমিয়া)!</h4>
+          <span style="font-size:13px;color:#B91C1C;">সুগার ৩.৯ mmol/L এর নিচে নামলে মস্তিষ্কে ক্ষতি হতে পারে।</span>
+        </div>
+      </div>
+      <div style="background:#fff;border-radius:12px;padding:14px;margin-top:12px;">
+        <strong style="color:#991B1B;font-size:14px;display:block;margin-bottom:6px;">তাৎক্ষণিক ১৫-১৫ নিয়ম অনুসরণ করুন:</strong>
+        <p style="font-size:13.5px;color:var(--ink);line-height:1.6;margin-bottom:6px;">
+          ১. অবিলম্বে <b>১৫ গ্রাম দ্রুত শোষণযোগ্য চিনি</b> (৩ চা চামচ চিনি পানিতে গুলে, বা আধা গ্লাস মিষ্টি জুস) পান করুন।<br>
+          ২. <b>১৫ মিনিট</b> বিশ্রাম নিন ও অপেক্ষা করুন।<br>
+          ৩. ১৫ মিনিট পর পুনরায় গ্লুকোমিটার দিয়ে সুগার মাপুন।
+        </p>
+      </div>
+    </div>
+  ` : '';
+
+  el.innerHTML = `
+    ${hypoBanner}
+    <div class="result-card" style="background:#fff;border-top:4px solid ${d.color};padding:28px;border-radius:20px;margin-top:0;">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
+        <div>
+          <span class="badge" style="background:var(--bg-subtle);color:${d.color};font-size:13px;font-weight:700;">
+            ${d.category}
+          </span>
+          <div style="font-size:40px;font-weight:800;color:var(--ink);margin-top:8px;font-family:'Plus Jakarta Sans',sans-serif;">
+            ${toBn(d.input_value)} <span style="font-size:16px;color:var(--ink-secondary);font-weight:600;">${d.unit === 'mgdl' ? 'mg/dL' : (d.test_type === 'hba1c' ? '%' : 'mmol/L')}</span>
+          </div>
+          ${d.unit === 'mgdl' ? `<span style="font-size:13px;color:var(--ink-muted);">(${toBn(d.mmol_value)} mmol/L এর সমান)</span>` : ''}
+        </div>
+        <div style="text-align:right;">
+          <a href="/tools/telemedicine/" class="action-pill" style="color:var(--green);border-color:var(--green);font-weight:700;">
+            <span>👨‍⚕️ প্রেসক্রিপশন রিভিউ করান</span> <span>→</span>
+          </a>
+        </div>
+      </div>
+
+      <div style="background:#FAF8F5;border-radius:14px;padding:16px;margin-bottom:20px;">
+        <strong style="color:var(--ink);display:block;margin-bottom:4px;">চিকিৎসক পর্যালোচনা:</strong>
+        <p style="font-size:14px;color:var(--ink-secondary);line-height:1.6;">${d.assessment}</p>
+      </div>
+
+      <!-- Diabetic Plate Model -->
+      <div style="border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:20px;">
+        <h4 style="font-size:15px;color:var(--ink);margin-bottom:8px;">🥗 আদর্শ ডায়াবেটিস থালা (Plate Model):</h4>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;text-align:center;">
+          <div style="background:#EBF7EE;padding:12px;border-radius:12px;">
+            <b style="color:var(--green);font-size:18px;">৫০%</b>
+            <span style="font-size:12px;display:block;color:var(--ink);">শাকসবজি ও সালাদ</span>
+          </div>
+          <div style="background:#EFF6FF;padding:12px;border-radius:12px;">
+            <b style="color:var(--blue);font-size:18px;">২৫%</b>
+            <span style="font-size:12px;display:block;color:var(--ink);">প্রোটিন (মাছ/ডিম/ডাল)</span>
+          </div>
+          <div style="background:#FFFBEB;padding:12px;border-radius:12px;">
+            <b style="color:var(--amber);font-size:18px;">২৫%</b>
+            <span style="font-size:12px;display:block;color:var(--ink);">ভাত/রুটি (কম শর্করা)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lifestyle Rules -->
+      <div>
+        <h4 style="font-size:15px;color:var(--ink);margin-bottom:10px;">💡 রক্তে সুগার নিয়ন্ত্রণের সোনালী নিয়ম:</h4>
+        <div style="display:grid;gap:10px;">
+          ${d.lifestyle_rules.map(r => `
+            <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:12px 16px;">
+              <b style="font-size:14px;color:var(--ink);">${r.title}</b>
+              <p style="font-size:13px;color:var(--ink-secondary);margin-top:2px;line-height:1.5;">${r.desc}</p>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderHypoProtocol() {
+  const el = document.getElementById('diaOut');
+  if (!el) return;
+  el.innerHTML = `
+    <div class="result-card" style="background:#fff;border-top:4px solid #DC2626;padding:28px;border-radius:20px;margin-top:0;">
+      <div style="text-align:center;margin-bottom:20px;">
+        <span style="font-size:42px;">🚨</span>
+        <h3 style="color:#991B1B;font-size:22px;margin:8px 0;">হাইপোগ্লাইসেমিয়ার (সুগার কমে যাওয়া) ১৫-১৫ নিয়ম</h3>
+        <p style="font-size:14px;color:var(--ink-secondary);">সুগার ৩.৯ mmol/L এর নিচে নামলে অথবা প্রচুর ঘাম, বুক ধড়ফড় ও মাথা ঘোরার তাৎক্ষণিক প্রোটোকল।</p>
+      </div>
+
+      <div style="display:grid;gap:14px;margin-bottom:24px;">
+        <div style="display:flex;gap:14px;align-items:flex-start;background:#FEF2F2;padding:16px;border-radius:14px;">
+          <div style="width:36px;height:36px;border-radius:50%;background:#DC2626;color:#fff;display:grid;place-items:center;font-weight:800;flex:none;">১</div>
+          <div>
+            <b style="font-size:15px;color:#991B1B;">১৫ গ্রাম দ্রুত গ্লুকোজ খান</b>
+            <p style="font-size:13.5px;color:var(--ink);margin-top:2px;">৩ চা চামচ চিনি বা মধু পানিতে গুলিয়ে অথবা আধা গ্লাস ফলের মিষ্টি জুস সঙ্গে সঙ্গে পান করুন।</p>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:14px;align-items:flex-start;background:#FFFBEB;padding:16px;border-radius:14px;">
+          <div style="width:36px;height:36px;border-radius:50%;background:#D97706;color:#fff;display:grid;place-items:center;font-weight:800;flex:none;">২</div>
+          <div>
+            <b style="font-size:15px;color:#92400E;">১৫ মিনিট বিশ্রাম ও অপেক্ষা</b>
+            <p style="font-size:13.5px;color:var(--ink);margin-top:2px;">কোনো কায়িক পরিশ্রম না করে শান্ত হয়ে বসে বা শুয়ে থাকুন।</p>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:14px;align-items:flex-start;background:#EFF6FF;padding:16px;border-radius:14px;">
+          <div style="width:36px;height:36px;border-radius:50%;background:#2563EB;color:#fff;display:grid;place-items:center;font-weight:800;flex:none;">৩</div>
+          <div>
+            <b style="font-size:15px;color:#1E40AF;">পুনরায় সুগার পরিমাপ</b>
+            <p style="font-size:13.5px;color:var(--ink);margin-top:2px;">১৫ মিনিট পর গ্লুকোমিটার দিয়ে আবার সুগার পরীক্ষা করুন। সুগার যদি এখনো ৪ এর নিচে থাকে, পুনরায় ১ নম্বর ধাপ অনুসরণ করুন।</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align:center;">
+        <a href="https://wa.me/8801785949700?text=%E0%A6%86%E0%A6%B8%E0%A6%B8%E0%A6%BE%E0%A6%B2%E0%A6%BE%E0%A6%AE%E0%A7%81%20%E0%A6%86%E0%A6%B2%E0%A6%BE%E0%A6%87%E0%A6%95%E0%A7%81%E0%A6%AE%20%E0%A6%A1%E0%A6%BE.%20%E0%A6%B8%E0%A7%8B%E0%A6%B9%E0%A6%BE%E0%A6%97%20%E0%A6%B8%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%B0%2C%20%E0%A6%B8%E0%A7%81%E0%A6%97%E0%A6%BE%E0%A6%B0%20%E0%A6%95%E0%A6%AE%E0%A7%87%20%E0%A6%97%E0%A6%BF%E0%A7%9F%E0%A7%87%E0%A6%9B%E0%A6%BF%E0%A6%B2%E0%A7%8B%2C%20%E0%A6%A1%E0%A6%BE%E0%A6%95%E0%A7%8D%E0%A6%A4%E0%A6%BE%E0%A6%B0%E0%A7%87%E0%A6%B0%20%E0%A6%AA%E0%A6%B0%E0%A6%BE%E0%A6%AE%E0%A6%B0%E0%A7%8D%E0%A6%B6%20%E0%A6%9A%E0%A6%BE%E0%A6%87" target="_blank" class="btn-primary" style="background:#25D366;font-size:15px;">
+          <span>💬 ডা. সোহাগের সাথে জরুরি পরামর্শ করুন</span> <span>→</span>
+        </a>
+      </div>
+    </div>
+  `;
+}
+
+function renderLipidResult(d) {
+  const el = document.getElementById('lipOut');
+  if (!el) return;
+  el.innerHTML = `
+    <div class="result-card" style="background:#fff;border-radius:20px;padding:28px;margin-top:0;">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:20px;">
+        <div>
+          <span style="font-size:13px;color:var(--ink-muted);display:block;">কোলেস্টেরল অনুপাত (Total/HDL Ratio)</span>
+          <div style="font-size:36px;font-weight:800;color:var(--ink);">${toBn(d.cholesterol_ratio)} : ১</div>
+        </div>
+        <div>
+          <span class="badge ${d.ratio_status === 'আদর্শ' ? 'badge-green' : (d.ratio_status === 'মধ্যম ঝুঁকি' ? 'badge-amber' : 'badge-rose')}" style="font-size:14px;padding:6px 14px;">
+            হৃদরোগ ঝুঁকি: ${d.ratio_status}
+          </span>
+        </div>
+      </div>
+
+      <!-- 4 Evaluated Badges -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:24px;">
+        ${d.evaluations.map(ev => `
+          <div style="background:#FAF8F5;border:1px solid var(--border);border-radius:14px;padding:16px;">
+            <span style="font-size:12px;color:var(--ink-muted);display:block;">${ev.name}</span>
+            <b style="font-size:22px;color:var(--ink);margin:4px 0;display:block;">${toBn(ev.value)}</b>
+            <span style="font-size:12px;font-weight:700;color:${ev.color};">● ${ev.status}</span>
+          </div>
+        `).join('')}
+      </div>
+
+      <!-- Fatty Liver Advice -->
+      <div style="background:#F0FDF4;border:1px solid var(--green);border-radius:16px;padding:20px;margin-bottom:20px;">
+        <h4 style="color:var(--green);font-size:16px;margin-bottom:10px;">🌿 ফ্যাটি লিভার ও রক্তনালির চর্বি দূর করার বৈজ্ঞানিক উপায়:</h4>
+        <ul style="padding-left:20px;font-size:13.5px;color:var(--ink);line-height:1.7;">
+          ${d.fatty_liver_tips.map(t => `<li>${t}</li>`).join('')}
+        </ul>
+      </div>
+
+      <div style="display:flex;gap:10px;justify-content:flex-end;">
+        <a href="/tools/telemedicine/" class="btn-primary" style="background:#0E7A47;">
+          <span>👨‍⚕️ ডাক্তারের সাথে লিপিড রিপোর্ট শেয়ার করুন</span> <span>→</span>
+        </a>
+      </div>
+    </div>
+  `;
+}
+
+function renderEmergencyCard(item) {
+  const el = document.getElementById('emgCardContainer');
+  if (!el) return;
+
+  let specialHtml = '';
+  if (item.id === 'chest_pain') {
+    specialHtml = `
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px;">
+        <div style="background:#FEF2F2;border:1.5px solid #F87171;border-radius:14px;padding:16px;">
+          <b style="color:#DC2626;font-size:15px;display:block;margin-bottom:8px;">💔 হার্ট অ্যাটাকের লক্ষণ:</b>
+          <ul style="padding-left:18px;font-size:13px;color:var(--ink);line-height:1.6;">
+            ${item.heart_attack_signs.map(s => `<li>${s}</li>`).join('')}
+          </ul>
+        </div>
+        <div style="background:#F0FDF4;border:1.5px solid #4ADE80;border-radius:14px;padding:16px;">
+          <b style="color:#16A34A;font-size:15px;display:block;margin-bottom:8px;">🔥 সাধারণ গ্যাসের লক্ষণ:</b>
+          <ul style="padding-left:18px;font-size:13px;color:var(--ink);line-height:1.6;">
+            ${item.gas_signs.map(s => `<li>${s}</li>`).join('')}
+          </ul>
+        </div>
+      </div>
+    `;
+  } else if (item.id === 'stroke_fast') {
+    specialHtml = `
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-bottom:18px;">
+        ${item.fast_steps.map(st => `
+          <div style="background:#EFF6FF;border:1px solid #93C5FD;border-radius:12px;padding:14px;">
+            <span class="badge badge-blue" style="font-size:14px;font-weight:800;">${st.letter}</span>
+            <b style="font-size:14px;color:var(--ink);display:block;margin-top:6px;">${st.meaning}</b>
+            <p style="font-size:12.5px;color:var(--ink-secondary);margin-top:4px;">${st.test}</p>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
+
+  el.innerHTML = `
+    <div class="result-card" style="background:#fff;border-radius:20px;padding:28px;box-shadow:0 8px 24px rgba(0,0,0,0.06);margin-top:0;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+        <span style="font-size:36px;">${item.icon}</span>
+        <div>
+          <h3 style="font-size:20px;color:var(--ink);margin:0;">${item.title}</h3>
+          <p style="font-size:13.5px;color:var(--ink-secondary);margin-top:2px;">${item.summary}</p>
+        </div>
+      </div>
+
+      ${specialHtml}
+
+      <div style="background:#FFF1F2;border:1.5px solid #F43F5E;border-radius:14px;padding:16px;margin-top:16px;">
+        <b style="color:#E11D48;font-size:14.5px;display:block;margin-bottom:4px;">🚨 অবিলম্বে যা করতে হবে:</b>
+        <p style="font-size:13.5px;color:var(--ink);line-height:1.6;">${item.urgent_action}</p>
+      </div>
+
+      <div style="display:flex;gap:12px;margin-top:20px;justify-content:center;flex-wrap:wrap;">
+        <a href="tel:999" class="btn-primary" style="background:#DC2626;box-shadow:0 6px 16px rgba(220,38,38,0.25);">
+          <span>📞 ৯৯৯ এ জরুরি কল দিন</span>
+        </a>
+        <a href="https://wa.me/8801785949700?text=%E0%A6%86%E0%A6%B8%E0%A6%B8%E0%A6%BE%E0%A6%B2%E0%A6%BE%E0%A6%AE%E0%A7%81%20%E0%A6%86%E0%A6%B2%E0%A6%BE%E0%A6%87%E0%A6%95%E0%A7%81%E0%A6%AE%20%E0%A6%A1%E0%A6%BE.%20%E0%A6%B8%E0%A7%8B%E0%A6%B9%E0%A6%BE%E0%A6%97%20%E0%A6%B8%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%B0%2C%20%E0%A6%86%E0%A6%AE%E0%A6%BE%E0%A6%B0%20%E0%A6%8F%E0%A6%95%E0%A6%9F%E0%A6%BF%20%E0%A6%9C%E0%A6%B0%E0%A7%81%E0%A6%B0%E0%A6%BF%20%E0%A6%AE%E0%A7%87%E0%A6%A1%E0%A6%BF%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%B2%20%E0%A6%B8%E0%A6%AE%E0%A6%B8%E0%A7%8D%E0%A6%AF%E0%A6%BE%20%E0%A6%A6%E0%A7%87%E0%A6%96%E0%A6%BE%20%E0%A6%A6%E0%A6%BF%E0%A7%9F%E0%A7%87%E0%A6%9B%E0%A7%87%E0%A5%A4%20%E0%A6%86%E0%A6%AA%E0%A6%A8%E0%A6%BE%E0%A6%B0%20%E0%A6%AA%E0%A6%B0%E0%A6%BE%E0%A6%AE%E0%A6%B0%E0%A7%8D%E0%A6%B6%20%E0%A6%9A%E0%A6%BE%E0%A6%87" target="_blank" class="btn-primary" style="background:#25D366;box-shadow:0 6px 16px rgba(37,211,102,0.25);">
+          <span>💬 ডা. সোহাগের পরামর্শ নিন</span>
+        </a>
+      </div>
+    </div>
+  `;
+}
+
+function renderMedicineFAQ(faqs) {
+  const el = document.getElementById('faqListOut');
+  if (!el) return;
+  if (!faqs.length) {
+    el.innerHTML = `
+      <div style="text-align:center;padding:40px;color:var(--ink-muted);">
+        🔍 কোনো প্রশ্ন মেলেনি। অন্য শব্দ লিখে খুঁজে দেখুন।
+      </div>
+    `;
+    return;
+  }
+
+  el.innerHTML = `
+    <div style="display:grid;gap:12px;">
+      ${faqs.map((f, i) => `
+        <details style="background:#fff;border:1px solid var(--border);border-radius:16px;padding:16px 20px;" ${i === 0 ? 'open' : ''}>
+          <summary style="font-weight:700;font-size:15px;color:var(--ink);cursor:pointer;display:flex;justify-content:space-between;align-items:center;">
+            <span>❓ ${f.q}</span>
+            <span style="color:var(--green);font-size:20px;">+</span>
+          </summary>
+          <div style="padding-top:12px;margin-top:12px;border-top:1px solid var(--border);font-size:14px;color:var(--ink-secondary);line-height:1.7;">
+            ${f.a}
+          </div>
+        </details>
+      `).join('')}
+    </div>
+  `;
+}
+
+// ── Boot ──
+const fn = TOOL_RENDERERS[TOOL.id];
+if (fn) fn();
+else renderError('টুলটি লোড করা যায়নি।');
+</script>
+{% endblock %}

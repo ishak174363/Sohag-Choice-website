@@ -1,0 +1,598 @@
+{% load static %}
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>{% block title %}সোহাগ চয়েস · ফ্রি টুলবক্স | শিশু, মা ও পরিবারের দরকারি হিসাব{% endblock %}</title>
+  <meta name="description" content="{% block description %}শিশুর টিকার তারিখ, বিকাশ চেকলিস্ট, বাচ্চার খাবার তালিকা, নাম অর্থসহ, দেশি খাবারের ক্যালরি: পরিবারের দরকারি সব টুল সম্পূর্ণ বাংলায় ও ফ্রি।{% endblock %}">
+  <meta name="theme-color" content="#0F281E">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="সোহাগ চয়েস · ফ্রি টুলবক্স">
+  <meta property="og:description" content="শিশুর টিকার তারিখ, বিকাশ চেকলিস্ট, বাচ্চার খাবার তালিকা, নাম অর্থসহ, দেশি খাবারের ক্যালরি: পরিবারের দরকারি সব টুল সম্পূর্ণ বাংলায় ও ফ্রি।">
+  <meta property="og:type" content="website">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Bengali:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+<!-- ══ 1. Announcement Marquee Ticker ═══════════════════════ -->
+<div class="ticker-bar" aria-label="জরুরি নোটিশ">
+  <div class="ticker-track">
+    <span class="ticker-item"><i>🌿</i> সারা দেশে ক্যাশ অন ডেলিভারি</span>
+    <span class="ticker-item"><i>✨</i> প্রতিটা জিনিস পরিবারের জন্য নিজে দেখে বাছাই করা</span>
+    <span class="ticker-item"><i>👶</i> সম্পূর্ণ ফ্রি টুলস: শিশুর টিকা, মাইলস্টোন, ওজন-উচ্চতা চার্ট</span>
+    <span class="ticker-item"><i>💬</i> যেকোনো প্রশ্নে সরাসরি হোয়াটসঅ্যাপে যোগাযোগ করুন</span>
+    <span class="ticker-item"><i>🌿</i> সারা দেশে ক্যাশ অন ডেলিভারি</span>
+    <span class="ticker-item"><i>✨</i> প্রতিটা জিনিস পরিবারের জন্য নিজে দেখে বাছাই করা</span>
+    <span class="ticker-item"><i>👶</i> সম্পূর্ণ ফ্রি টুলস: শিশুর টিকা, মাইলস্টোন, ওজন-উচ্চতা চার্ট</span>
+    <span class="ticker-item"><i>💬</i> যেকোনো প্রশ্নে সরাসরি হোয়াটসঅ্যাপে যোগাযোগ করুন</span>
+  </div>
+</div>
+
+<!-- ══ 2. Main Luxury Header ════════════════════════════════ -->
+<header class="header" id="mainHeader">
+  <div class="header-main">
+    <!-- Brand Logo -->
+    <a class="logo" href="/" aria-label="Sohag's Choice Home">
+      <div class="logo-badge">🌿</div>
+      <div class="logo-text">
+        সোহাগ <span>চয়েস</span>
+        <span class="logo-tag">পরিবারের বিশ্বস্ত গাইড</span>
+      </div>
+    </a>
+
+    <!-- Global Search with Live Floating Dropdown -->
+    <div class="header-search" id="searchWrapper">
+      <span class="icon-search">🔍</span>
+      <input type="text" id="globalSearch" placeholder="টুল খুঁজুন: baby, টিকা, খাবার, diet, নাম…" autocomplete="off" enterkeyhint="search">
+      <span class="clear-btn" id="globalClear">✕</span>
+
+      <!-- Live Search Results Dropdown (Floating) -->
+      <div class="search-dropdown" id="searchDropdown">
+        <div class="search-dropdown-list" id="searchDropdownList"></div>
+      </div>
+    </div>
+
+    <!-- Header Actions & WhatsApp -->
+    <div class="header-actions">
+      <!-- Verified User Badge (Gate) -->
+      <button class="action-pill" id="userBadge" style="display:none;" onclick="openGateModal()">
+        <span style="color:var(--green)">✓</span> <span id="userBadgeText"></span>
+      </button>
+
+      <!-- WhatsApp Quick Button -->
+      <a class="btn-wa" id="headerWaBtn" href="https://wa.me/8801785949700?text=%E0%A6%86%E0%A6%B8%E0%A6%B8%E0%A6%BE%E0%A6%B2%E0%A6%BE%E0%A6%AE%E0%A7%81%20%E0%A6%86%E0%A6%B2%E0%A6%BE%E0%A6%87%E0%A6%95%E0%A7%81%E0%A6%AE%20%E0%A6%A1%E0%A6%BE.%20%E0%A6%B8%E0%A7%8B%E0%A6%B9%E0%A6%BE%E0%A6%97%20%E0%A6%B8%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%B0%2C%20%E0%A6%86%E0%A6%AE%E0%A6%BF%20%E0%A6%86%E0%A6%AA%E0%A6%A8%E0%A6%BE%E0%A6%B0%20%E0%A6%93%E0%A7%9F%E0%A7%87%E0%A6%AC%E0%A6%B8%E0%A6%BE%E0%A6%87%E0%A6%9F%20%E0%A6%A5%E0%A7%87%E0%A6%95%E0%A7%87%20%E0%A6%A8%E0%A6%95%20%E0%A6%A6%E0%A6%BF%E0%A6%9A%E0%A7%8D%E0%A6%9B%E0%A6%BF%E0%A5%A4%20%E0%A6%86%E0%A6%AE%E0%A6%BE%E0%A6%B0%20%E0%A6%B8%E0%A7%8D%E0%A6%AC%E0%A6%BE%E0%A6%B8%E0%A7%8D%E0%A6%A5%E0%A7%8D%E0%A6%AF%20%E0%A6%B8%E0%A6%AE%E0%A6%B8%E0%A7%8D%E0%A6%AF%E0%A6%BE%20%E0%A6%A8%E0%A6%BF%E0%A7%9F%E0%A7%87%20%E0%A6%86%E0%A6%AA%E0%A6%A8%E0%A6%BE%E0%A6%B0%20%E0%A6%B8%E0%A6%B0%E0%A6%BE%E0%A6%B8%E0%A6%B0%E0%A6%BF%20%E0%A6%AA%E0%A6%B0%E0%A6%BE%E0%A6%AE%E0%A6%B0%E0%A7%8D%E0%A6%B6%20%E0%A6%93%20%E0%A6%B8%E0%A6%BF%E0%A6%B0%E0%A6%BF%E0%A7%9F%E0%A6%BE%E0%A6%B2%20%E0%A6%AA%E0%A7%87%E0%A6%A4%E0%A7%87%20%E0%A6%9A%E0%A6%BE%E0%A6%9A%E0%A7%8D%E0%A6%9B%E0%A6%BF%E0%A5%A4" target="_blank" rel="noopener">
+        <span>💬</span> <span>হোয়াটসঅ্যাপ</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Secondary Menu Bar -->
+  <nav class="sub-nav" aria-label="ক্যাটাগরি মেনু">
+    <a href="/" class="{% if request.path == '/' %}active{% endif %}">🏠 হোম</a>
+    <a href="/tools/telemedicine/" class="{% if request.path == '/tools/telemedicine/' %}active{% endif %}" style="color:var(--green);font-weight:700;">👨‍⚕️ অনলাইন ডাক্তার</a>
+    <a href="/tools/bp/" class="{% if request.path == '/tools/bp/' %}active{% endif %}">🩺 প্রেশার গাইড</a>
+    <a href="/tools/diabetes/" class="{% if request.path == '/tools/diabetes/' %}active{% endif %}">🩸 ডায়াবেটিস</a>
+    <a href="/tools/lipid/" class="{% if request.path == '/tools/lipid/' %}active{% endif %}">❤️ কোলেস্টেরল</a>
+    <a href="/tools/symptoms/" class="{% if request.path == '/tools/symptoms/' %}active{% endif %}">🚨 জরুরি লক্ষণ</a>
+    <a href="/tools/pregnancy/">🤰 মায়ের যত্ন</a>
+    <a href="/tools/vaccine/">💉 টিকার ক্যালেন্ডার</a>
+    <a href="/tools/milestone/">🧸 বিকাশ চেকলিস্ট</a>
+    <a href="/tools/babyfood/">🥣 বাচ্চার খাবার</a>
+    <a href="/tools/calories/">🍛 খাবারের ক্যালরি</a>
+    <a href="/tools/diet/">🥗 ডায়েট প্ল্যান</a>
+  </nav>
+</header>
+
+<!-- ══ Main Content ════════════════════════════════════════ -->
+<main>
+  {% block content %}{% endblock %}
+</main>
+
+<!-- ══ Floating WhatsApp Consultation Button ═══════════════ -->
+<a class="floating-wa" id="floatWa" href="https://wa.me/8801785949700?text=%E0%A6%86%E0%A6%B8%E0%A6%B8%E0%A6%BE%E0%A6%B2%E0%A6%BE%E0%A6%AE%E0%A7%81%20%E0%A6%86%E0%A6%B2%E0%A6%BE%E0%A6%87%E0%A6%95%E0%A7%81%E0%A6%AE%20%E0%A6%A1%E0%A6%BE.%20%E0%A6%B8%E0%A7%8B%E0%A6%B9%E0%A6%BE%E0%A6%97%20%E0%A6%B8%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%B0%2C%20%E0%A6%86%E0%A6%AE%E0%A6%BF%20%E0%A6%86%E0%A6%AA%E0%A6%A8%E0%A6%BE%E0%A6%B0%20%E0%A6%93%E0%A7%9F%E0%A7%87%E0%A6%AC%E0%A6%B8%E0%A6%BE%E0%A6%87%E0%A6%9F%20%E0%A6%A5%E0%A7%87%E0%A6%95%E0%A7%87%20%E0%A6%A8%E0%A6%95%20%E0%A6%A6%E0%A6%BF%E0%A6%9A%E0%A7%8D%E0%A6%9B%E0%A6%BF%E0%A5%A4%20%E0%A6%86%E0%A6%AE%E0%A6%BE%E0%A6%B0%20%E0%A6%B8%E0%A7%8D%E0%A6%AC%E0%A6%BE%E0%A6%B8%E0%A7%8D%E0%A6%A5%E0%A7%8D%E0%A6%AF%20%E0%A6%B8%E0%A6%AE%E0%A6%B8%E0%A7%8D%E0%A6%AF%E0%A6%BE%20%E0%A6%A8%E0%A6%BF%E0%A7%9F%E0%A7%87%20%E0%A6%86%E0%A6%AA%E0%A6%A8%E0%A6%BE%E0%A6%B0%20%E0%A6%B8%E0%A6%B0%E0%A6%BE%E0%A6%B8%E0%A6%B0%E0%A6%BF%20%E0%A6%AA%E0%A6%B0%E0%A6%BE%E0%A6%AE%E0%A6%B0%E0%A7%8D%E0%A6%B6%20%E0%A6%93%20%E0%A6%B8%E0%A6%BF%E0%A6%B0%E0%A6%BF%E0%A7%9F%E0%A6%BE%E0%A6%B2%20%E0%A6%AA%E0%A7%87%E0%A6%A4%E0%A7%87%20%E0%A6%9A%E0%A6%BE%E0%A6%9A%E0%A7%8D%E0%A6%9B%E0%A6%BF%E0%A5%A4" target="_blank" rel="noopener" aria-label="হোয়াটসঅ্যাপে চ্যাট করুন">
+  <div class="wa-bubble">
+    <span class="wa-ping"></span>
+    <span class="wa-icon">💬</span>
+  </div>
+  <div class="wa-label">
+    <b>প্রশ্ন আছে?</b>
+    <span>হোয়াটসঅ্যাপে বলুন</span>
+  </div>
+</a>
+
+<style>
+.floating-wa {
+  position: fixed;
+  bottom: 28px;
+  right: 24px;
+  z-index: 990;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  padding: 8px 16px 8px 10px;
+  border-radius: 999px;
+  box-shadow: 0 8px 28px rgba(15, 40, 30, 0.18), 0 2px 8px rgba(0,0,0,0.06);
+  border: 1.5px solid #25D366;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.floating-wa:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 14px 36px rgba(37, 211, 102, 0.35);
+}
+.wa-bubble {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #25D366;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-size: 20px;
+  flex: none;
+}
+.wa-ping {
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 2px solid #25D366;
+  animation: wa-pulse 2s infinite;
+}
+@keyframes wa-pulse {
+  0%   { transform: scale(1); opacity: 0.9; }
+  100% { transform: scale(1.4); opacity: 0; }
+}
+.wa-label {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+.wa-label b { font-size: 13px; color: var(--ink); }
+.wa-label span { font-size: 11px; color: var(--green); font-weight: 600; }
+@media (max-width: 768px) {
+  .floating-wa {
+    bottom: 74px; /* above mobile bottom nav */
+    right: 16px;
+    padding: 6px 12px 6px 8px;
+  }
+  .wa-bubble { width: 36px; height: 36px; font-size: 18px; }
+  .wa-label b { font-size: 12px; }
+  .wa-label span { font-size: 10px; }
+}
+</style>
+
+<!-- ══ Rich E-Commerce & Brand Consumer Footer ══════════════ -->
+<footer class="site-footer">
+  <div class="footer-wrap">
+    <div class="footer-grid">
+      <!-- Col 1: Brand & Founder Story -->
+      <div class="footer-col footer-brand">
+        <div class="footer-logo">
+          <span style="font-size:24px">🌿</span>
+          <span>সোহাগ চয়েস</span>
+        </div>
+        <p class="footer-desc">
+          পরিবারের সবচেয়ে সংবেদনশীল সময়গুলোতে দরকার সঠিক ও নির্ভরযোগ্য গাইডেন্স। বাচ্চার টিকা থেকে শুরু করে পুষ্টিকর খাবারের তালিকা—প্রতিটি টুল তৈরি হয়েছে বৈজ্ঞানিক ও স্বাস্থ্যসম্মত নিয়ম মেনে।
+        </p>
+        <div class="footer-badge-trust">
+          <span>✓</span> সারা দেশে ক্যাশ অন ডেলিভারি
+        </div>
+        <p style="font-size:12px;color:var(--ink-muted);margin-top:12px;line-height:1.5">
+          ⚠️ এই টুলগুলো সাধারণ ধারণা ও সচেতনতার জন্য, এটি সরাসরি চিকিৎসকের বিকল্প নয়।
+        </p>
+      </div>
+
+      <!-- Col 2: মায়ের জন্য -->
+      <div class="footer-col">
+        <h5>মায়ের জন্য</h5>
+        <ul class="footer-links">
+          <li><a href="/tools/pregnancy/">গর্ভাবস্থার ৪২ সপ্তাহ</a></li>
+          <li><a href="/tools/diet/">মায়ের সঠিক ডায়েট</a></li>
+          <li><a href="/tools/supplement/">সাপ্লিমেন্ট গাইড</a></li>
+          <li><a href="/tools/bmi/">বিএমআই ক্যালকুলেটর</a></li>
+          <li><a href="/tools/water/">দৈনিক পানির হিসাব</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 3: শিশুর বিকাশ -->
+      <div class="footer-col">
+        <h5>শিশুর বিকাশ</h5>
+        <ul class="footer-links">
+          <li><a href="/tools/vaccine/">টিকার সময়সূচি (EPI)</a></li>
+          <li><a href="/tools/milestone/">বিকাশ মাইলস্টোন</a></li>
+          <li><a href="/tools/growth/">WHO গ্রোথ চার্ট</a></li>
+          <li><a href="/tools/babyfood/">মাসভিত্তিক খাবার মেনু</a></li>
+          <li><a href="/tools/names/">অর্থসহ সুন্দর নাম</a></li>
+          <li><a href="/tools/books/">বয়স অনুযায়ী বই</a></li>
+          <li><a href="/tools/worksheets/">প্রিন্ট ওয়ার্কশিট</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 4: খাবার ও স্বাস্থ্য -->
+      <div class="footer-col">
+        <h5>খাবার ও পুষ্টি</h5>
+        <ul class="footer-links">
+          <li><a href="/tools/calories/">দেশি খাবারের ক্যালরি</a></li>
+          <li><a href="/tools/honey/">খাঁটি মধু ও ঘি চেনার উপায়</a></li>
+          <li><a href="/tools/ramadan/">সেহরি ও ইফতার গাইড</a></li>
+          <li><a href="/tools/habit/">৩০ দিনের অভ্যাস চ্যালেঞ্জ</a></li>
+          <li><a href="https://wa.me/8801785949700" target="_blank" style="color:var(--green);font-weight:700">💬 সরাসরি প্রশ্ন করুন</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 5: মেডিসিন ও ডক্টর -->
+      <div class="footer-col">
+        <h5>মেডিসিন ও ডক্টর</h5>
+        <ul class="footer-links">
+          <li><a href="/tools/telemedicine/" style="color:var(--green);font-weight:700;">👨‍⚕️ অনলাইন ডাক্তার বুকিং</a></li>
+          <li><a href="/tools/bp/">উচ্চ রক্তচাপ ও প্রেশার গাইড</a></li>
+          <li><a href="/tools/diabetes/">ডায়াবেটিস ও সুগার ট্র্যাকার</a></li>
+          <li><a href="/tools/lipid/">কোলেস্টেরল ও হার্ট রিস্ক</a></li>
+          <li><a href="/tools/symptoms/">কোন অবস্থায় কী করবেন (জরুরি)</a></li>
+          <li><a href="/tools/medicinefaq/">মেডিসিন সাধারণ জিজ্ঞাসা</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Bottom Copyright & Delivery row -->
+    <div class="footer-bottom-bar">
+      <span>© ২০২৬ সোহাগ চয়েস · সর্বস্বত্ব সংরক্ষিত</span>
+      <span>ভালোবাসা দিয়ে তৈরি বাংলাদেশের প্রতিটি পরিবারের জন্য ❤️</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ══ Mobile Sticky Bottom Nav ═════════════════════════════ -->
+<nav class="mobile-bottom-nav" aria-label="মোবাইল নেভিগেশন">
+  <a class="bnav-item {% if request.path == '/' %}active{% endif %}" href="/">
+    <span class="bnav-icon">🏠</span>
+    <span>হোম</span>
+  </a>
+  <a class="bnav-item" href="/tools/telemedicine/">
+    <span class="bnav-icon">👨‍⚕️</span>
+    <span>ডাক্তার</span>
+  </a>
+  <a class="bnav-item" href="/tools/bp/">
+    <span class="bnav-icon">🩺</span>
+    <span>প্রেশার</span>
+  </a>
+  <a class="bnav-item" href="/tools/diabetes/">
+    <span class="bnav-icon">🩸</span>
+    <span>সুগার</span>
+  </a>
+  <a class="bnav-item" href="https://wa.me/8801785949700" target="_blank">
+    <span class="bnav-icon">💬</span>
+    <span>হোয়াটসঅ্যাপ</span>
+  </a>
+</nav>
+
+<!-- ══ Lead / Gate Modal (Reminder Save) ════════════════════ -->
+<div class="modal-overlay" id="gateModal" role="dialog" aria-modal="true" aria-labelledby="gateTitle">
+  <div class="modal-card">
+    <button class="modal-close" onclick="closeGateModal()" aria-label="বন্ধ করুন">✕</button>
+    <div class="modal-icon" id="gateIcon">🔔</div>
+    <h3 id="gateTitle">আপনার নাম ও নম্বর দিন</h3>
+    <p id="gateSubtitle">একবার দিলেই সব টুলে ক্যালেন্ডার ও নোটিফিকেশন স্বয়ংক্রিয়ভাবে কাজ করবে।</p>
+    <form id="gateForm" onsubmit="handleGateSubmit(event)">
+      <div class="form-group" style="text-align:left;">
+        <label class="form-label" for="gateName">আপনার নাম</label>
+        <input class="form-input" type="text" id="gateName" placeholder="যেমন: সুমাইয়া" required>
+      </div>
+      <div class="form-group" style="text-align:left;">
+        <label class="form-label" for="gatePhone">মোবাইল নম্বর</label>
+        <input class="form-input" type="tel" id="gatePhone" placeholder="01XXXXXXXXX" pattern="01[3-9][0-9]{8}" required>
+      </div>
+      <button class="btn-primary" type="submit" style="width:100%;margin-top:8px;" id="gateSubmitBtn">চালু করুন ✓</button>
+      <p style="font-size:11.5px;color:var(--ink-muted);margin-top:12px;margin-bottom:0">
+        🔒 আপনার নম্বর সম্পূর্ণ নিরাপদ থাকবে। কোনো স্প্যাম পাঠানো হবে না।
+      </p>
+    </form>
+  </div>
+</div>
+
+<!-- ══ Global Toast Notification ════════════════════════════ -->
+<div id="toast" role="status" aria-live="polite"></div>
+
+<!-- ══ Global Master Tools Catalog for Instant Search ════════ -->
+<script>
+const ALL_CATALOG_TOOLS = [
+  // ── Medicine & Telemedicine ───────────────────────────────
+  { id: 'telemedicine', name: 'টেলিমেডিসিন ও অনলাইন ডক্টর কনসালটেশন', short: 'ভিডিও কল ও হোয়াটসঅ্যাপে সরাসরি ডাক্তারের পরামর্শ', icon: '👨‍⚕️', group: 'doctor', group_name: 'টেলিমেডিসিন সেবা', color: '#0E7A47', bg: '#EBF7EE', kw: 'telemedicine doctor consultant appointment online dr sohag prescription video call poramorsho daktar daktarer call' },
+  { id: 'bp',           name: 'উচ্চ রক্তচাপ ও প্রেশার গাইড', short: 'প্রেশার রেকর্ড, স্টেজ বিশ্লেষণ ও জরুরি করণীয়', icon: '🩺', group: 'medicine', group_name: 'মেডিসিন ও ক্রনিক কেয়ার', color: '#1D4ED8', bg: '#EFF6FF', kw: 'bp blood pressure high pressure hypertension systolic diastolic pulse map heart matha ghora pressure chart daktar' },
+  { id: 'diabetes',     name: 'ডায়াবেটিস ও রক্তের সুগার ট্র্যাকার', short: 'ফাস্টিং, খাবার পর ও HbA1c হিসাব এবং ১৫-১৫ নিয়ম', icon: '🩸', group: 'medicine', group_name: 'মেডিসিন ও ক্রনিক কেয়ার', color: '#DC2626', bg: '#FEF2F2', kw: 'diabetes diabetis sugar blood sugar glucose fasting post meal hba1c hypo hypoglycemia 15-15 insulin insulin dose khabar diet' },
+  { id: 'lipid',        name: 'কোলেস্টেরল ও হার্ট রিস্ক গাইড', short: 'লিপিড প্রোফাইল (LDL, HDL, TG) ও হৃদরোগের ঝুঁকি', icon: '❤️', group: 'medicine', group_name: 'মেডিসিন ও ক্রনিক কেয়ার', color: '#0F766E', bg: '#E7F7F5', kw: 'lipid cholesterol fatty liver ldl hdl triglycerides heart cardiac risk chorbi roktone block diet' },
+  { id: 'symptoms',     name: 'কোন অবস্থায় কী করবেন (জরুরি গাইড)', short: 'বুকে ব্যথা, স্ট্রোক, গ্যাস বনাম হার্ট অ্যাটাক চেনার উপায়', icon: '🚨', group: 'medicine', group_name: 'মেডিসিন ও ক্রনিক কেয়ার', color: '#DC2626', bg: '#FEF2F2', kw: 'symptoms emergency buke betha chest pain heart attack stroke fast low bp hypotention jor khichuni fever first aid' },
+  { id: 'medicinefaq',  name: 'মেডিসিনের বহুল জিজ্ঞাসিত প্রশ্ন', short: 'প্রেশার, ডায়াবেটিস, গ্যাস্ট্রিক ও ওষুধের বৈজ্ঞানিক সমাধান', icon: '💡', group: 'medicine', group_name: 'মেডিসিন ও ক্রনিক কেয়ার', color: '#1D4ED8', bg: '#EFF6FF', kw: 'medicine faq question answer gastric antibiotic kidney painkiller preshar diabetes medicine doctor' },
+
+  // ── Existing Tools ─────────────────────────────────────────
+  { id: 'vaccine',    name: 'শিশুর টিকার সময়সূচি ও রিমাইন্ডার', short: 'জন্মতারিখ দিন, প্রতিটা টিকার তারিখ পান', icon: '💉', group: 'kids', group_name: 'শিশুর জন্য', color: '#0E7A47', bg: '#EBF7EE', kw: 'vaccine tika tikar epi immunization injection shishu baby child baccha bacchar' },
+  { id: 'milestone',  name: 'শিশুর বিকাশ চেকলিস্ট', short: 'বয়স অনুযায়ী কী পারার কথা, আর কী খেলবেন', icon: '🧸', group: 'kids', group_name: 'শিশুর জন্য', color: '#0E7A47', bg: '#EBF7EE', kw: 'milestone bikash development montessori khela kheladhula shishu baby child baccha' },
+  { id: 'growth',     name: 'শিশুর ওজন ও উচ্চতা চার্ট', short: 'WHO চার্টে বাচ্চার ওজন-উচ্চতা ঠিক আছে কি না', icon: '📏', group: 'kids', group_name: 'শিশুর জন্য', color: '#0E7A47', bg: '#EBF7EE', kw: 'growth ojon uccota weight height growth chart who baby shishu child baccha' },
+  { id: 'babyfood',   name: 'মাস অনুযায়ী বাচ্চার খাবার তালিকা', short: '৬ মাস থেকে ৫ বছর, সপ্তাহের পুরো মেনু', icon: '🥣', group: 'kids', group_name: 'শিশুর জন্য', color: '#0E7A47', bg: '#EBF7EE', kw: 'babyfood baby food khabar khichuri suji menu solid shishu baccha bacchar khabar' },
+  { id: 'names',      name: 'শিশুর সুন্দর নাম, অর্থসহ', short: 'ইসলামিক ও বাংলা নাম, অর্থ আর উৎসসহ', icon: '✨', group: 'kids', group_name: 'শিশুর জন্য', color: '#0E7A47', bg: '#EBF7EE', kw: 'names nam name meaning islamic ortho shishu baby baccha' },
+  { id: 'books',      name: 'বয়স অনুযায়ী বই খুঁজুন', short: 'বাচ্চার বয়স ও পছন্দ বলুন, বইয়ের তালিকা নিন', icon: '📚', group: 'kids', group_name: 'শিশুর জন্য', color: '#0E7A47', bg: '#EBF7EE', kw: 'books boi book story golpo pora shishu baby baccha' },
+  { id: 'worksheets', name: 'প্রিন্টেবল ওয়ার্কশিট', short: 'বর্ণ লেখা, সংখ্যা আর অংকের অনুশীলন শিট', icon: '✏️', group: 'kids', group_name: 'শিশুর জন্য', color: '#0E7A47', bg: '#EBF7EE', kw: 'worksheets worksheet print tracing borno abc lekha onko math sheet' },
+  { id: 'pregnancy',  name: 'সপ্তাহে সপ্তাহে গর্ভাবস্থা', short: 'এই সপ্তাহে বাচ্চা কত বড়, মায়ের কী করণীয়', icon: '🤰', group: 'mom', group_name: 'মায়ের জন্য', color: '#C85228', bg: '#FDF0EB', kw: 'pregnancy gorbho gorvo week saptah ma pregnant delivery due date baccha baby' },
+  { id: 'diet',       name: 'আমার ডায়েট প্ল্যান', short: 'আপনার খাবার দিয়েই ওজন কমানো বা বাড়ানোর মাপ', icon: '🥗', group: 'food', group_name: 'খাবার ও পুষ্টি', color: '#0F766E', bg: '#E7F7F5', kw: 'diet dayet dait plan ojon komano komate barano barate weight loss gain mota chikon bmi bmr khabar talika chart' },
+  { id: 'calories',   name: 'দেশি খাবারের ক্যালরি', short: 'ভাত, মাছ, মিষ্টি, নাস্তা: কোনটায় কত ক্যালরি', icon: '🍛', group: 'food', group_name: 'খাবার ও পুষ্টি', color: '#0F766E', bg: '#E7F7F5', kw: 'calories calorie kalori diet bhat fish mach mangsho khabar food nutrition chart weight loss' },
+  { id: 'honey',      name: 'খাঁটি মধু ও ঘি চেনার উপায়', short: 'কোন ঘরোয়া পরীক্ষা কাজ করে, কোনটা মিথ', icon: '🍯', group: 'food', group_name: 'খাবার ও পুষ্টি', color: '#0F766E', bg: '#E7F7F5', kw: 'honey modhu ghee khati pure adulteration porikkha test' },
+  { id: 'supplement', name: 'আমার কি সাপ্লিমেন্ট লাগবে?', short: '১০টি প্রশ্নে ভিটামিন ও মিনারেলের ঘাটতির ঝুঁকি', icon: '💊', group: 'food', group_name: 'খাবার ও পুষ্টি', color: '#0F766E', bg: '#E7F7F5', kw: 'supplement vitamin iron b12 d omega calcium zinc folate biotin quiz nutrition' },
+  { id: 'ramadan',    name: 'সেহরি ও ইফতারের সময়', short: '৬৪ জেলার সেহরি-ইফতার, সাথে স্বাস্থ্যকর ইফতার', icon: '🌙', group: 'food', group_name: 'খাবার ও পুষ্টি', color: '#0F766E', bg: '#E7F7F5', kw: 'ramadan sehri seheri iftar roja rojar somoy district calendar' },
+  { id: 'habit',      name: '৩০ দিনের হ্যাবিট চ্যালেঞ্জ', short: 'অ্যাটমিক হ্যাবিটস মেনে ৩০ দিনে নতুন অভ্যাস', icon: '🔥', group: 'life', group_name: 'নিজেকে গড়ুন', color: '#3D5AA8', bg: '#EEF3FF', kw: 'habit ovvash ovyas challenge atomic 30 days tracker routin' },
+  { id: 'bmi',        name: 'বিএমআই ক্যালকুলেটর', short: 'আপনার ওজন সঠিক পরিসীমায় আছে কি না দেখুন', icon: '⚖️', group: 'life', group_name: 'নিজেকে গড়ুন', color: '#3D5AA8', bg: '#EEF3FF', kw: 'bmi body mass index ojon weight height uccota mota chikon calculator' },
+  { id: 'water',      name: 'দৈনিক পানির হিসাব', short: 'বয়স ও ওজন অনুযায়ী প্রতিদিন কতটুকু পানি দরকার', icon: '💧', group: 'life', group_name: 'নিজেকে গড়ুন', color: '#3D5AA8', bg: '#EEF3FF', kw: 'water pani drink glass hydration hydration daily glass' },
+];
+
+// Bengali Numbers
+const toBn = n => String(n).replace(/\d/g, d => '০১২৩৪৫৬৭৮৯'[d]);
+const toEn = s => String(s).replace(/[০-৯]/g, d => '০১২৩৪৫৬৭৮৯'.indexOf(d));
+
+// Toast
+function toast(msg, dur=2800) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toast._timer);
+  toast._timer = setTimeout(() => el.classList.remove('show'), dur);
+}
+
+// User Gate State (LocalStorage)
+const UserStore = {
+  get() {
+    try { return JSON.parse(localStorage.getItem('sohag_user')); } catch(e) { return null; }
+  },
+  set(user) {
+    try { localStorage.setItem('sohag_user', JSON.stringify(user)); } catch(e) {}
+    renderUserBadge();
+  }
+};
+
+function renderUserBadge() {
+  const u = UserStore.get();
+  const el = document.getElementById('userBadge');
+  const txt = document.getElementById('userBadgeText');
+  if (u && u.name) {
+    el.style.display = 'inline-flex';
+    txt.textContent = u.name;
+  } else {
+    el.style.display = 'none';
+  }
+}
+renderUserBadge();
+
+function openGateModal(opts={}) {
+  if (opts.title) document.getElementById('gateTitle').textContent = opts.title;
+  if (opts.subtitle) document.getElementById('gateSubtitle').textContent = opts.subtitle;
+  if (opts.icon) document.getElementById('gateIcon').textContent = opts.icon;
+  document.getElementById('gateModal').classList.add('open');
+}
+function closeGateModal() {
+  document.getElementById('gateModal').classList.remove('open');
+}
+function handleGateSubmit(e) {
+  e.preventDefault();
+  const name = document.getElementById('gateName').value.trim();
+  const phone = document.getElementById('gatePhone').value.trim();
+  if (name && phone) {
+    UserStore.set({ name, phone });
+    closeGateModal();
+    toast(`ধন্যবাদ ${name}! সফলভাবে সংরক্ষিত হয়েছে ✓`);
+    if (window._afterGateSuccess) window._afterGateSuccess();
+  }
+}
+
+// WhatsApp Helper with Tool Context & Visitor Tag
+const WA_PHONE = "8801785949700";
+function getVisitorCode() {
+  let c = sessionStorage.getItem('sohag_vcode');
+  if (!c) {
+    c = Math.random().toString(36).substring(2, 7).toUpperCase();
+    sessionStorage.setItem('sohag_vcode', c);
+  }
+  return c;
+}
+function buildWaUrl(msg) {
+  const full = `${msg}\n\n(রেফারেন্স কোড: ${getVisitorCode()})`;
+  return `https://wa.me/${WA_PHONE}?text=${encodeURIComponent(full)}`;
+}
+
+// Download .ICS calendar file (for Vaccines & Pregnancy due date)
+function downloadIcs(events, filename="reminder.ics") {
+  const pad = n => String(n).padStart(2, '0');
+  const d8 = d => `${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}`;
+  const nowStamp = new Date().toISOString().replace(/[-:]/g, '').slice(0, 15) + 'Z';
+
+  let lines = [
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    "PRODID:-//Sohag Choice//Tools//BN",
+    "CALSCALE:GREGORIAN",
+    "METHOD:PUBLISH"
+  ];
+
+  events.forEach((ev, i) => {
+    const dt = new Date(ev.date);
+    const dtNext = new Date(dt.getTime() + 86400000);
+    lines.push(
+      "BEGIN:VEVENT",
+      `UID:${d8(dt)}-${i}-${getVisitorCode()}@sohagchoice`,
+      `DTSTAMP:${nowStamp}`,
+      `DTSTART;VALUE=DATE:${d8(dt)}`,
+      `DTEND;VALUE=DATE:${d8(dtNext)}`,
+      `SUMMARY:${ev.title}`,
+      `DESCRIPTION:${ev.desc || ''}`,
+      "BEGIN:VALARM",
+      "ACTION:DISPLAY",
+      `DESCRIPTION:${ev.title}`,
+      "TRIGGER:-PT12H",
+      "END:VALARM",
+      "END:VEVENT"
+    );
+  });
+  lines.push("END:VCALENDAR");
+
+  const blob = new Blob([lines.join("\r\n")], { type: "text/calendar;charset=utf-8" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  toast("📅 ক্যালেন্ডার ফাইল (.ics) ডাউনলোড হয়েছে!");
+}
+
+// Global Print / Save as PDF Page
+function openPrintPage(title, htmlContent) {
+  const w = window.open("", "_blank");
+  if (!w) {
+    toast("পপআপ ব্লক হয়েছে, ব্রাউজারে অনুমতি দিন।");
+    return;
+  }
+  w.document.write(`
+    <!doctype html>
+    <html lang="bn">
+    <head>
+      <meta charset="utf-8">
+      <title>${title} · সোহাগ চয়েস</title>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700&display=swap">
+      <style>
+        @page { size: A4; margin: 15mm; }
+        body { font-family: 'Noto Sans Bengali', sans-serif; color: #0F281E; padding: 10px; line-height: 1.6; max-width: 190mm; margin: auto; }
+        .p-header { display: flex; justify-content: space-between; border-bottom: 2px solid #0E7A47; padding-bottom: 10px; margin-bottom: 20px; }
+        .p-brand { font-size: 22px; font-weight: 800; color: #0E7A47; }
+        .p-tag { font-size: 13px; color: #6D7D74; }
+        .p-btn-bar { position: sticky; top: 0; background: #fff; padding: 12px 0; border-bottom: 1px solid #ddd; margin-bottom: 16px; }
+        .p-btn { background: #0E7A47; color: #fff; border: 0; padding: 10px 20px; border-radius: 8px; font-size: 15px; font-weight: 700; cursor: pointer; }
+        table { width: 100%; border-collapse: collapse; margin-top: 14px; }
+        th, td { border: 1px solid #cfd6d0; padding: 8px 10px; text-align: left; font-size: 13.5px; }
+        th { background: #F4FBF5; }
+        .p-footer { margin-top: 30px; border-top: 1px solid #ddd; padding-top: 10px; font-size: 12px; color: #6D7D74; display: flex; justify-content: space-between; }
+        @media print { .p-btn-bar { display: none; } }
+      </style>
+    </head>
+    <body>
+      <div class="p-btn-bar">
+        <button class="p-btn" onclick="window.print()">🖨️ প্রিন্ট করুন / PDF হিসেবে সেভ করুন</button>
+      </div>
+      <div class="p-header">
+        <div>
+          <div class="p-brand">সোহাগ চয়েস · ফ্রি টুলবক্স</div>
+          <div class="p-tag">পরিবারের দরকারি সব স্বাস্থ্য ও পুষ্টি হিসাব</div>
+        </div>
+        <div style="text-align:right;font-size:12px;color:#6D7D74;">
+          তারিখ: ${new Date().toLocaleDateString('bn-BD')}<br>
+          www.sohagchoice.com
+        </div>
+      </div>
+      <div>${htmlContent}</div>
+      <div class="p-footer">
+        <span>সোহাগ চয়েস · আপনার পরিবারের বিশ্বস্ত সঙ্গী</span>
+        <span>হোয়াটসঅ্যাপ: 01785-949700</span>
+      </div>
+    </body>
+    </html>
+  `);
+  w.document.close();
+}
+
+// ══ 3. Global Universal Live Search System ═════════════════
+(function initGlobalSearch() {
+  const input = document.getElementById('globalSearch');
+  const clearBtn = document.getElementById('globalClear');
+  const dropdown = document.getElementById('searchDropdown');
+  const list = document.getElementById('searchDropdownList');
+  if (!input) return;
+
+  function doSearch() {
+    const raw = input.value.trim().toLowerCase();
+    clearBtn.classList.toggle('visible', raw.length > 0);
+
+    if (!raw) {
+      dropdown.classList.remove('open');
+      if (window._onFilterTools) window._onFilterTools('');
+      return;
+    }
+
+    // Filter catalog with Banglish, Bengali, ID & KW keywords
+    const matches = ALL_CATALOG_TOOLS.filter(t => {
+      const allText = `${t.id} ${t.name} ${t.short} ${t.group_name} ${t.kw}`.toLowerCase();
+      // check if any word matches
+      const tokens = raw.split(/\s+/).filter(Boolean);
+      return tokens.every(tok => allText.includes(tok));
+    });
+
+    if (window._onFilterTools) {
+      window._onFilterTools(raw);
+    }
+
+    // Populate dropdown
+    if (matches.length > 0) {
+      list.innerHTML = matches.map(m => `
+        <a class="search-drop-item" href="/tools/${m.id}/">
+          <span class="search-drop-icon" style="background:${m.bg};">${m.icon}</span>
+          <div class="search-drop-info">
+            <div class="search-drop-title">${m.name}</div>
+            <div class="search-drop-desc">${m.short}</div>
+          </div>
+          <span class="search-drop-group" style="color:${m.color};background:${m.bg};">${m.group_name}</span>
+          <span class="search-drop-arrow">→</span>
+        </a>
+      `).join('');
+      dropdown.classList.add('open');
+    } else {
+      list.innerHTML = `
+        <div style="padding:22px;text-align:center;color:var(--ink-muted);font-size:14px;">
+          🔍 “${input.value}” দিয়ে কোনো টুল পাওয়া যায়নি।<br>
+          <span style="font-size:12px;color:var(--green);margin-top:6px;display:inline-block;">যেমন: baby, টিকা, খাবার, diet, নাম দিয়ে খুঁজে দেখুন।</span>
+        </div>
+      `;
+      dropdown.classList.add('open');
+    }
+  }
+
+  input.addEventListener('input', doSearch);
+  input.addEventListener('focus', () => { if (input.value.trim()) doSearch(); });
+
+  clearBtn.addEventListener('click', () => {
+    input.value = '';
+    doSearch();
+    input.focus();
+  });
+
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      const first = dropdown.querySelector('.search-drop-item');
+      if (first) {
+        e.preventDefault();
+        window.location.href = first.getAttribute('href');
+      }
+    } else if (e.key === 'Escape') {
+      dropdown.classList.remove('open');
+    }
+  });
+
+  // Close dropdown on outside click
+  document.addEventListener('click', e => {
+    if (!e.target.closest('#searchWrapper')) {
+      dropdown.classList.remove('open');
+    }
+  });
+})();
+</script>
+
+{% block extra_js %}{% endblock %}
+</body>
+</html>

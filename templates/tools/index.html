@@ -1,0 +1,377 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}সোহাগ চয়েস · ফ্রি টুলবক্স | পরিবারের দরকারি সব হিসাব{% endblock %}
+
+{% block content %}
+
+<!-- ══ 1. HERO CAROUSEL (Image Slider) ═══════════════════════ -->
+<section class="hero-slider-wrap">
+  <div class="carousel" id="heroCarousel">
+    <div class="carousel-track" id="carouselTrack">
+
+      <!-- Slide 1: Founder & Brand Story (Doctor Sohag Hasan Featured) -->
+      <div class="carousel-slide slide-founder">
+        <div class="slide-content">
+          <div class="slide-badge">
+            <span>👨‍⚕️</span> <span>ডা. সোহাগ হাসান · MBBS (DU)</span>
+          </div>
+          <h2 class="slide-title">
+            Caring for patients <br>
+            <span class="highlight">with dedication</span>
+          </h2>
+          <p class="slide-desc">
+            গোপালগঞ্জ মেডিকেল কলেজ হাসপাতাল থেকে ইন্টার্নশিপ সম্পন্নকারী রেজিস্টার্ড চিকিৎসক। উচ্চ রক্তচাপ, ডায়াবেটিস ও পরিবারের সামগ্রিক স্বাস্থ্য সুরক্ষায় সরাসরি পরামর্শ নিন।
+          </p>
+          <div class="slide-cta-row">
+            <a href="/tools/telemedicine/" class="slide-btn" style="background:#0E7A47;">
+              <span>👨‍⚕️ সরাসরি যোগাযোগ করুন</span> <span>→</span>
+            </a>
+            <a href="https://wa.me/8801785949700?text=%E0%A6%86%E0%A6%B8%E0%A6%B8%E0%A6%BE%E0%A6%B2%E0%A6%BE%E0%A6%AE%E0%A7%81%20%E0%A6%86%E0%A6%B2%E0%A6%BE%E0%A6%87%E0%A6%95%E0%A7%81%E0%A6%AE%20%E0%A6%A1%E0%A6%BE.%20%E0%A6%B8%E0%A7%8B%E0%A6%B9%E0%A6%BE%E0%A6%97%20%E0%A6%B8%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%B0%2C%20%E0%A6%86%E0%A6%AE%E0%A6%BF%20%E0%A6%86%E0%A6%AA%E0%A6%A8%E0%A6%BE%E0%A6%B0%20%E0%A6%93%E0%A7%9F%E0%A7%87%E0%A6%AC%E0%A6%B8%E0%A6%BE%E0%A6%87%E0%A6%9F%20%E0%A6%A5%E0%A7%87%E0%A6%95%E0%A7%87%20%E0%A6%A8%E0%A6%95%20%E0%A6%A6%E0%A6%BF%E0%A6%9A%E0%A7%8D%E0%A6%9B%E0%A6%BF%E0%A5%A4%20%E0%A6%86%E0%A6%AE%E0%A6%BE%E0%A6%B0%20%E0%A6%B8%E0%A7%8D%E0%A6%AC%E0%A6%BE%E0%A6%B8%E0%A7%8D%E0%A6%A5%E0%A7%8D%E0%A6%AF%20%E0%A6%B8%E0%A6%AE%E0%A6%B8%E0%A7%8D%E0%A6%AF%E0%A6%BE%20%E0%A6%A8%E0%A6%BF%E0%A7%9F%E0%A7%87%20%E0%A6%86%E0%A6%AA%E0%A6%A8%E0%A6%BE%E0%A6%B0%20%E0%A6%B8%E0%A6%B0%E0%A6%BE%E0%A6%B8%E0%A6%B0%E0%A6%BF%20%E0%A6%AA%E0%A6%B0%E0%A6%BE%E0%A6%AE%E0%A6%B0%E0%A7%8D%E0%A6%B6%20%E0%A6%93%20%E0%A6%B8%E0%A6%BF%E0%A6%B0%E0%A6%BF%E0%A7%9F%E0%A6%BE%E0%A6%B2%20%E0%A6%AA%E0%A7%87%E0%A6%A4%E0%A7%87%20%E0%A6%9A%E0%A6%BE%E0%A6%9A%E0%A7%8D%E0%A6%9B%E0%A6%BF%E0%A5%A4" class="slide-btn secondary" target="_blank">
+              <span>💬 হোয়াটসঅ্যাপ (01785-949700)</span>
+            </a>
+          </div>
+        </div>
+        <div class="slide-visual">
+          <div class="founder-card">
+            <img src="{% static 'images/doctor_sohag.jpg' %}" alt="ডা. সোহাগ হাসান - সোহাগ চয়েস">
+            <div class="founder-tag">
+              <b>ডা. সোহাগ হাসান</b>
+              <span>MBBS (DU) · রেজিস্টার্ড চিকিৎসক</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: Baby EPI Vaccine Schedule & Reminders -->
+      <div class="carousel-slide slide-kids">
+        <div class="slide-content">
+          <div class="slide-badge" style="background:var(--green-soft);color:var(--green)">
+            <span>💉</span> <span>টিকার সময়সূচি ও অ্যালার্ম</span>
+          </div>
+          <h2 class="slide-title">
+            শিশুর সঠিক সময়ে <br>
+            <span class="highlight">সবগুলো টিকার হিসাব</span>
+          </h2>
+          <p class="slide-desc">
+            জন্মতারিখ লিখলেই প্রতিটা টিকার নির্ধারিত তারিখ পেয়ে যাবেন। এক ক্লিকে ফোনের ক্যালেন্ডারে রিমাইন্ডার সেভ বা প্রিন্ট করে রাখুন।
+          </p>
+          <div class="slide-cta-row">
+            <a href="/tools/vaccine/" class="slide-btn" style="background:var(--green)">
+              <span>💉 টিকার সময়সূচি দেখুন</span> <span>→</span>
+            </a>
+          </div>
+        </div>
+        <div class="slide-visual">
+          <div class="visual-badge-card" style="border-color:rgba(14,122,71,0.2)">
+            <span class="huge-emoji">👶</span>
+            <strong style="font-size:18px;color:var(--green)">WHO & EPI সমর্থিত</strong>
+            <span style="font-size:13px;color:var(--ink-secondary)">BCG থেকে হাম-রুবেলা পর্যন্ত ৬টি গুরুত্বপূর্ণ ধাপ</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: Mother & Pregnancy 42 Weeks -->
+      <div class="carousel-slide slide-mom">
+        <div class="slide-content">
+          <div class="slide-badge" style="background:var(--rose-soft);color:var(--c-mom)">
+            <span>🤰</span> <span>মা ও অনাগত শিশুর যত্ন</span>
+          </div>
+          <h2 class="slide-title">
+            সপ্তাহে সপ্তাহে গর্ভাবস্থা <br>
+            <span class="highlight" style="color:var(--c-mom)">প্রতিটি মুহূর্তের গাইড</span>
+          </h2>
+          <p class="slide-desc">
+            এই সপ্তাহে শিশু কতটুকু বড় হলো, মায়ের শরীরে কী পরিবর্তন হচ্ছে এবং কী খাওয়া জরুরি—সহজ বাংলায় জেনে নিন।
+          </p>
+          <div class="slide-cta-row">
+            <a href="/tools/pregnancy/" class="slide-btn" style="background:var(--c-mom)">
+              <span>🤰 গর্ভাবস্থার হিসাব শুরু করুন</span> <span>→</span>
+            </a>
+          </div>
+        </div>
+        <div class="slide-visual">
+          <div class="visual-badge-card" style="border-color:rgba(200,82,40,0.2)">
+            <span class="huge-emoji">🌸</span>
+            <strong style="font-size:18px;color:var(--c-mom)">৪২ সপ্তাহের ডায়েরি</strong>
+            <span style="font-size:13px;color:var(--ink-secondary)">ডেলিভারির সম্ভাব্য তারিখ ও প্রতি ট্রাইমেস্টারের যত্ন</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: Food & Calorie Tracker -->
+      <div class="carousel-slide slide-food">
+        <div class="slide-content">
+          <div class="slide-badge" style="background:var(--t-food);color:var(--c-food)">
+            <span>🍛</span> <span>দেশি খাবার ও ফিটনেস</span>
+          </div>
+          <h2 class="slide-title">
+            ভাত, মাছ, শাকসবজি খেয়েই <br>
+            <span class="highlight" style="color:var(--c-food)">ওজন নিয়ন্ত্রণে রাখুন</span>
+          </h2>
+          <p class="slide-desc">
+            কোন খাবারে কত ক্যালরি, কতটুকু প্রোটিন আর ফ্যাট? আপনার বয়স ও ওজন দিয়ে তৈরি করুন পার্সোনালাইজড ডায়েট চার্ট।
+          </p>
+          <div class="slide-cta-row">
+            <a href="/tools/calories/" class="slide-btn" style="background:var(--c-food)">
+              <span>🍛 ক্যালরি চার্ট দেখুন</span> <span>→</span>
+            </a>
+            <a href="/tools/diet/" class="slide-btn secondary">
+              <span>🥗 ডায়েট প্ল্যান</span>
+            </a>
+          </div>
+        </div>
+        <div class="slide-visual">
+          <div class="visual-badge-card" style="border-color:rgba(15,118,110,0.2)">
+            <span class="huge-emoji">🥗</span>
+            <strong style="font-size:18px;color:var(--c-food)">খাঁটি দেশি খাবারের তালিকা</strong>
+            <span style="font-size:13px;color:var(--ink-secondary)">ক্যালরি, প্রোটিন, শর্করা ও ফ্যাটের সঠিক হিসাব</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Carousel Controls -->
+    <button class="carousel-btn prev" id="prevSlide" aria-label="আগের স্লাইড">‹</button>
+    <button class="carousel-btn next" id="nextSlide" aria-label="পরের স্লাইড">›</button>
+
+    <!-- Slide Indicators -->
+    <div class="carousel-dots" id="carouselDots">
+      <span class="carousel-dot active" data-index="0"></span>
+      <span class="carousel-dot" data-index="1"></span>
+      <span class="carousel-dot" data-index="2"></span>
+      <span class="carousel-dot" data-index="3"></span>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 2. Section Heading ═════════════════════════════════════ -->
+<section class="hub-header">
+  <h1>ফ্রি টুলবক্স। <span>মা, শিশু ও পরিবারের দরকারি হিসাব।</span></h1>
+  <p>টিকার তারিখ, বিকাশের মাইলস্টোন, শিশুর খাবার, প্রেগন্যান্সির সপ্তাহ। এক মিনিটে সঠিক হিসাব, সম্পূর্ণ বাংলায়।</p>
+</section>
+
+<!-- ══ 3. Category Filter Chips ═══════════════════════════════ -->
+<div class="filter-chips-wrap">
+  <div class="filter-chips" id="filterChips" role="tablist">
+    <button class="f-chip active" data-filter="all" role="tab">
+      <span>সব টুল ({{ total }})</span>
+    </button>
+    {% for g in groups %}
+    <button class="f-chip" data-filter="{{ g.id }}" role="tab" style="--chip-c:{{ g.color }}">
+      <span class="dot" style="background:{{ g.color }}"></span>
+      <span>{{ g.name }}</span>
+    </button>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- ══ 4. Groups & Tiles Grid ═════════════════════════════════ -->
+<div class="wrap groups-container" id="groupsContainer">
+
+  {% regroup tools by group as tools_by_group %}
+  {% for group_obj in tools_by_group %}
+    {% with g_id=group_obj.grouper %}
+    {% for g in groups %}{% if g.id == g_id %}
+    <section class="tool-group" data-group="{{ g.id }}" id="sec-{{ g.id }}" style="--group-color:{{ g.color }};--group-bg:{{ g.bg }}">
+      <div class="group-title-row">
+        <span class="group-indicator"></span>
+        <h2>{{ g.name }}</h2>
+        <span class="group-pill-count">{{ group_obj.list|length }}টি টুল</span>
+      </div>
+
+      <div class="tool-grid">
+        {% for tool in group_obj.list %}
+        <a class="tool-card"
+           href="/tools/{{ tool.id }}/"
+           style="--group-color:{{ tool.color }};--group-bg:{{ tool.bg }}"
+           data-id="{{ tool.id }}"
+           data-name="{{ tool.name }}"
+           data-short="{{ tool.short }}"
+           data-group="{{ tool.group }}">
+          <div class="card-icon">{{ tool.icon }}</div>
+          <div class="card-title">{{ tool.name }}</div>
+          <div class="card-short">{{ tool.short }}</div>
+          <div class="card-arrow">→</div>
+        </a>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}{% endfor %}
+    {% endwith %}
+  {% endfor %}
+
+  <!-- Empty search message -->
+  <div id="noResults" style="display:none;text-align:center;padding:50px 20px;color:var(--ink-muted);">
+    <div style="font-size:48px;margin-bottom:12px">🔍</div>
+    <h3 style="color:var(--ink);font-size:18px"><span id="noResultsTerm"></span> কোনো টুল পাওয়া যায়নি</h3>
+    <p style="margin-top:6px">অন্য শব্দে খুঁজে দেখুন, যেমন “baby”, “টিকা”, “diet”, “খাবার”, “ক্যালরি”, “নাম” ইত্যাদি।</p>
+  </div>
+
+  <!-- ══ 5. Collapsible SEO Accordion (Like Demo) ═══════════════ -->
+  <details class="seo-fold" style="margin-top:40px;background:#fff;border:1px solid var(--border);border-radius:20px;padding:8px 24px;">
+    <summary style="font-weight:700;padding:16px 0;cursor:pointer;color:var(--ink);font-size:15px;display:flex;justify-content:space-between;align-items:center;">
+      <span>📖 কেন এই টুলগুলো তৈরি এবং কীভাবে ব্যবহার করবেন?</span>
+      <span style="font-size:20px;color:var(--green)">+</span>
+    </summary>
+    <div style="padding:10px 0 24px;color:var(--ink-secondary);font-size:14px;line-height:1.7;border-top:1px solid var(--border)">
+      <p style="margin-bottom:12px">
+        পরিবারের রোজকার প্রশ্নগুলোর উত্তর খুঁজতে মানুষ ইন্টারনেটে ঘোরে: বাচ্চার টিকা কবে, এই বয়সে কী খাওয়াব, ভাতে কত ক্যালরি, মধু খাঁটি কি না। সোহাগ চয়েসের এই টুলবক্সে সেই উত্তরগুলো সহজ বাংলায়, এক জায়গায়, সম্পূর্ণ ফ্রি।
+      </p>
+      <p style="margin-bottom:12px">
+        ফলাফল দেখতে কোনো মোবাইল নম্বর বা ফি দিতে হয় না। তবে আপনি চাইলে আপনার সুবিধার্থে ফোনের ক্যালেন্ডারে রিমাইন্ডার সেভ করে রাখতে পারেন যাতে কোনো গুরুত্বপূর্ণ টিকা বা চেকআপ মিস না হয়।
+      </p>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:16px">
+        <a href="https://wa.me/8801785949700?text=%E0%A6%86%E0%A6%B8%E0%A6%B8%E0%A6%BE%E0%A6%B2%E0%A6%BE%E0%A6%AE%E0%A7%81%20%E0%A6%86%E0%A6%B2%E0%A6%BE%E0%A6%87%E0%A6%95%E0%A7%81%E0%A6%AE%20%E0%A6%A1%E0%A6%BE.%20%E0%A6%B8%E0%A7%8B%E0%A6%B9%E0%A6%BE%E0%A6%97%20%E0%A6%B8%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%B0%2C%20%E0%A6%86%E0%A6%AE%E0%A6%BF%20%E0%A6%86%E0%A6%AA%E0%A6%A8%E0%A6%BE%E0%A6%B0%20%E0%A6%93%E0%A7%9F%E0%A7%87%E0%A6%AC%E0%A6%B8%E0%A6%BE%E0%A6%87%E0%A6%9F%20%E0%A6%A5%E0%A7%87%E0%A6%95%E0%A7%87%20%E0%A6%A8%E0%A6%95%20%E0%A6%A6%E0%A6%BF%E0%A6%9A%E0%A7%8D%E0%A6%9B%E0%A6%BF%E0%A5%A4%20%E0%A6%86%E0%A6%AE%E0%A6%BE%E0%A6%B0%20%E0%A6%B8%E0%A7%8D%E0%A6%AC%E0%A6%BE%E0%A6%B8%E0%A7%8D%E0%A6%A5%E0%A7%8D%E0%A6%AF%20%E0%A6%B8%E0%A6%AE%E0%A6%B8%E0%A7%8D%E0%A6%AF%E0%A6%BE%20%E0%A6%A8%E0%A6%BF%E0%A7%9F%E0%A7%87%20%E0%A6%86%E0%A6%AA%E0%A6%A8%E0%A6%BE%E0%A6%B0%20%E0%A6%B8%E0%A6%B0%E0%A6%BE%E0%A6%B8%E0%A6%B0%E0%A6%BF%20%E0%A6%AA%E0%A6%B0%E0%A6%BE%E0%A6%AE%E0%A6%B0%E0%A7%8D%E0%A6%B6%20%E0%A6%93%20%E0%A6%B8%E0%A6%BF%E0%A6%B0%E0%A6%BF%E0%A7%9F%E0%A6%BE%E0%A6%B2%20%E0%A6%AA%E0%A7%87%E0%A6%A4%E0%A7%87%20%E0%A6%9A%E0%A6%BE%E0%A6%9A%E0%A7%8D%E0%A6%9B%E0%A6%BF%E0%A5%A4" target="_blank" style="color:var(--green);font-weight:700">💬 সরাসরি চিকিৎসকের পরামর্শে হোয়াটসঅ্যাপ করুন</a>
+      </div>
+    </div>
+  </details>
+
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// ─── 1. Carousel Auto-slide & Touch Swiping ───────────────────
+(function initCarousel() {
+  const track = document.getElementById('carouselTrack');
+  const slides = document.querySelectorAll('.carousel-slide');
+  const dots = document.querySelectorAll('.carousel-dot');
+  const prevBtn = document.getElementById('prevSlide');
+  const nextBtn = document.getElementById('nextSlide');
+  let current = 0;
+  let timer = null;
+
+  function goToSlide(index) {
+    if (index < 0) index = slides.length - 1;
+    if (index >= slides.length) index = 0;
+    current = index;
+    track.style.transform = `translateX(-${current * 100}%)`;
+    dots.forEach((d, i) => d.classList.toggle('active', i === current));
+  }
+
+  function nextSlide() { goToSlide(current + 1); }
+  function prevSlide() { goToSlide(current - 1); }
+
+  function startAuto() {
+    stopAuto();
+    timer = setInterval(nextSlide, 5000);
+  }
+  function stopAuto() {
+    if (timer) clearInterval(timer);
+  }
+
+  nextBtn.addEventListener('click', () => { nextSlide(); startAuto(); });
+  prevBtn.addEventListener('click', () => { prevSlide(); startAuto(); });
+
+  dots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      goToSlide(+dot.dataset.index);
+      startAuto();
+    });
+  });
+
+  const carousel = document.getElementById('heroCarousel');
+  carousel.addEventListener('mouseenter', stopAuto);
+  carousel.addEventListener('mouseleave', startAuto);
+
+  // Touch Swipe
+  let startX = 0;
+  carousel.addEventListener('touchstart', e => { startX = e.touches[0].clientX; stopAuto(); }, { passive: true });
+  carousel.addEventListener('touchend', e => {
+    const diff = startX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) {
+      if (diff > 0) nextSlide(); else prevSlide();
+    }
+    startAuto();
+  }, { passive: true });
+
+  startAuto();
+})();
+
+// ─── 2. Filter Chips & Search Synchronization ─────────────────
+(function initFiltering() {
+  const chips = document.querySelectorAll('#filterChips .f-chip');
+  const searchInput = document.getElementById('globalSearch');
+  const clearBtn = document.getElementById('globalClear');
+  const cards = document.querySelectorAll('.tool-card');
+  const groups = document.querySelectorAll('.tool-group');
+  const noResults = document.getElementById('noResults');
+  let activeFilter = 'all';
+
+  // Keyword lookup map built from ALL_CATALOG_TOOLS
+  const toolKwMap = {};
+  if (typeof ALL_CATALOG_TOOLS !== 'undefined' && Array.isArray(ALL_CATALOG_TOOLS)) {
+    ALL_CATALOG_TOOLS.forEach(t => {
+      toolKwMap[t.id] = `${t.id} ${t.name} ${t.short} ${t.group_name} ${t.kw || ''}`.toLowerCase();
+    });
+  }
+
+  function apply(customQ) {
+    const raw = typeof customQ === 'string' ? customQ : (searchInput ? searchInput.value : '');
+    const q = raw.trim().toLowerCase();
+    const tokens = q.split(/\s+/).filter(Boolean);
+    let totalShown = 0;
+
+    cards.forEach(card => {
+      const id = card.dataset.id;
+      const group = card.dataset.group;
+      const matchesGroup = activeFilter === 'all' || group === activeFilter;
+
+      let matchesSearch = true;
+      if (tokens.length > 0) {
+        const kwText = toolKwMap[id] || `${id} ${card.dataset.name} ${card.dataset.short}`.toLowerCase();
+        matchesSearch = tokens.every(tok => kwText.includes(tok));
+      }
+
+      if (matchesGroup && matchesSearch) {
+        card.style.display = 'flex';
+        totalShown++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+
+    groups.forEach(g => {
+      const visible = [...g.querySelectorAll('.tool-card')].some(c => c.style.display !== 'none');
+      g.style.display = visible ? 'block' : 'none';
+    });
+
+    if (noResults) {
+      noResults.style.display = totalShown === 0 ? 'block' : 'none';
+      const termSpan = document.getElementById('noResultsTerm');
+      if (termSpan) termSpan.textContent = q ? `“${raw}” দিয়ে` : '';
+    }
+  }
+
+  // Connect global header search to in-page filtering
+  window._onFilterTools = function(query) {
+    apply(query);
+  };
+
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      chips.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      activeFilter = chip.dataset.filter;
+      apply();
+      if (activeFilter !== 'all') {
+        const sec = document.getElementById('sec-' + activeFilter);
+        if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  if (searchInput) {
+    searchInput.addEventListener('input', () => apply());
+  }
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      apply('');
+    });
+  }
+})();
+</script>
+{% endblock %}
